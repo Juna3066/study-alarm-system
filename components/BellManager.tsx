@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { BellSchedule, RingtoneType } from '../types';
+import * as XLSX from 'xlsx';
 
 interface BellManagerProps {
   schedule: BellSchedule[];
@@ -16,6 +17,8 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
   const [name, setName] = useState('');
   const [typeId, setTypeId] = useState('');
   const [remarks, setRemarks] = useState('');
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resetForm = () => {
     setTime('08:00');
@@ -70,6 +73,125 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     resetForm();
   };
 
+  // --- Excel Export Logic ---
+  const handleExportExcel = () => {
+    if (schedule.length === 0) {
+      alert("没有可导出的数据。");
+      return;
+    }
+
+    // Map data to user-friendly format
+    const data = schedule.map(s => ({
+      '触发时间': s.time,
+      '闹铃名称': s.name,
+      '铃声类型': ringtones.find(r => r.id === s.typeId)?.name || '未知',
+      '备注': s.remarks || ''
+    }));
+
+    // Create worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+    
+    // Adjust column width (optional)
+    const wscols = [
+      {wch: 10}, // Time
+      {wch: 20}, // Name
+      {wch: 15}, // Type
+      {wch: 30}  // Remarks
+    ];
+    ws['!cols'] = wscols;
+
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "闹铃计划");
+
+    // Write file
+    XLSX.writeFile(wb, `闹铃计划_${new Date().toISOString().split('T')[0]}.xlsx`);
+  };
+
+  // --- Excel Import Logic ---
+  const handleImportExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const bstr = event.target?.result;
+        const wb = XLSX.read(bstr, { type: 'binary' });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        // Read as raw values to handle times correctly manually if needed, or let XLSX handle it
+        const data: any[] = XLSX.utils.sheet_to_json(ws);
+
+        if (data.length === 0) {
+          alert("Excel 文件为空或格式不正确。");
+          return;
+        }
+
+        if (!confirm(`检测到 ${data.length} 条闹铃数据。\n导入将【覆盖】当前列表，是否继续？`)) {
+          if (fileInputRef.current) fileInputRef.current.value = '';
+          return;
+        }
+
+        const newSchedule: BellSchedule[] = [];
+        let defaultTypeId = ringtones.length > 0 ? ringtones[0].id : '';
+
+        data.forEach((row, index) => {
+          // Flexible column mapping
+          const rowTime = row['触发时间'] || row['时间'] || row['Time'];
+          const rowName = row['闹铃名称'] || row['名称'] || row['Name'];
+          const rowType = row['铃声类型'] || row['类型'] || row['Type'];
+          const rowRemarks = row['备注'] || row['Remarks'];
+
+          if (!rowTime || !rowName) return; // Skip invalid rows
+
+          // Normalize Time
+          let formattedTime = '00:00';
+          if (typeof rowTime === 'number') {
+             // Excel stores time as fraction of day (e.g., 0.5 = 12:00)
+             const totalMinutes = Math.round(rowTime * 24 * 60);
+             const h = Math.floor(totalMinutes / 60);
+             const m = totalMinutes % 60;
+             formattedTime = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+          } else {
+             // Assume string "HH:mm" or "HH:mm:ss"
+             const str = String(rowTime).trim();
+             const parts = str.split(':');
+             if (parts.length >= 2) {
+               formattedTime = `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
+             }
+          }
+
+          // Match Ringtone Type by Name
+          let matchedTypeId = defaultTypeId;
+          if (rowType) {
+            const found = ringtones.find(r => r.name === rowType);
+            if (found) matchedTypeId = found.id;
+          }
+
+          newSchedule.push({
+            id: crypto.randomUUID(),
+            time: formattedTime,
+            name: rowName,
+            typeId: matchedTypeId,
+            remarks: rowRemarks || ''
+          });
+        });
+
+        setSchedule(newSchedule);
+        alert(`成功导入 ${newSchedule.length} 条计划。`);
+
+      } catch (err) {
+        console.error(err);
+        alert("解析 Excel 文件失败，请确保文件格式正确。");
+      } finally {
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      }
+    };
+    reader.readAsBinaryString(file);
+  };
+
+
   // Sort schedule for display
   const sortedSchedule = [...schedule].sort((a, b) => a.time.localeCompare(b.time));
 
@@ -80,15 +202,49 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
             <span className="w-2 h-8 bg-blue-600 rounded-full"></span>
             闹铃计划管理
         </h2>
-        <button 
-          onClick={() => { resetForm(); setIsEditing(true); }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-medium"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-          </svg>
-          添加闹铃
-        </button>
+        
+        <div className="flex gap-2">
+            {/* Hidden File Input */}
+            <input 
+              type="file" 
+              accept=".xlsx, .xls" 
+              ref={fileInputRef} 
+              className="hidden" 
+              onChange={handleImportExcel} 
+            />
+
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2 font-medium text-sm"
+              title="从 Excel 导入"
+            >
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" transform="rotate(180 12 12)"/>
+               </svg>
+               导入Excel
+            </button>
+
+            <button 
+              onClick={handleExportExcel}
+              className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2 font-medium text-sm"
+              title="导出为 Excel"
+            >
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+               </svg>
+               导出Excel
+            </button>
+
+            <button 
+              onClick={() => { resetForm(); setIsEditing(true); }}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-medium ml-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+              </svg>
+              添加闹铃
+            </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex-1 flex flex-col">
