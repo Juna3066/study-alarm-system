@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { BellSchedule, RingtoneType } from '../types';
 
@@ -14,11 +15,13 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
   const [time, setTime] = useState('08:00');
   const [name, setName] = useState('');
   const [typeId, setTypeId] = useState('');
+  const [remarks, setRemarks] = useState('');
 
   const resetForm = () => {
     setTime('08:00');
     setName('');
     setTypeId(ringtones.length > 0 ? ringtones[0].id : '');
+    setRemarks('');
     setEditId(null);
     setIsEditing(false);
   };
@@ -28,6 +31,7 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     setTime(item.time);
     setName(item.name);
     setTypeId(item.typeId);
+    setRemarks(item.remarks || '');
     setIsEditing(true);
   };
 
@@ -51,7 +55,7 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
 
     if (isEditing && editId) {
       setSchedule(prev => prev.map(item => 
-        item.id === editId ? { ...item, time, name, typeId: validTypeId } : item
+        item.id === editId ? { ...item, time, name, typeId: validTypeId, remarks } : item
       ));
     } else {
       const newItem: BellSchedule = {
@@ -59,6 +63,7 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
         time,
         name,
         typeId: validTypeId,
+        remarks,
       };
       setSchedule(prev => [...prev, newItem]);
     }
@@ -94,13 +99,14 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
                 <th className="p-4 w-32">触发时间</th>
                 <th className="p-4">闹铃名称</th>
                 <th className="p-4">铃声类型</th>
+                <th className="p-4">备注</th>
                 <th className="p-4 text-right">操作</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {sortedSchedule.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-gray-400">暂无闹铃计划。</td>
+                  <td colSpan={5} className="p-8 text-center text-gray-400">暂无闹铃计划。</td>
                 </tr>
               )}
               {sortedSchedule.map(bell => {
@@ -113,6 +119,9 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
                         <span className="bg-blue-50 text-blue-700 py-1 px-3 rounded-md text-xs font-bold border border-blue-100">
                              {rType?.name || '类型已失效'}
                         </span>
+                    </td>
+                    <td className="p-4 text-slate-500 text-sm max-w-[200px] truncate" title={bell.remarks}>
+                        {bell.remarks || '-'}
                     </td>
                     <td className="p-4 text-right space-x-3">
                       <button onClick={() => handleEdit(bell)} className="text-blue-600 hover:text-blue-800 font-medium text-sm underline-offset-2 hover:underline">编辑</button>
@@ -171,6 +180,17 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
                         <option key={r.id} value={r.id}>{r.name}</option>
                     ))}
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1.5">备注</label>
+                <textarea 
+                  value={remarks}
+                  onChange={e => setRemarks(e.target.value)}
+                  className="w-full rounded-lg border-gray-300 border px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+                  rows={2}
+                  placeholder="可选：备注信息"
+                />
               </div>
 
               <div className="flex justify-end gap-3 mt-8 pt-2 border-t border-gray-100">

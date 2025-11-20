@@ -1,3 +1,4 @@
+
 export interface RingtoneType {
   id: string;
   name: string;
@@ -11,6 +12,7 @@ export interface BellSchedule {
   time: string; // Format "HH:mm"
   name: string;
   typeId: string; // Links to RingtoneType.id
+  remarks?: string; // Optional remarks field
 }
 
 export interface AppData {
