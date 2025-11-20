@@ -1,0 +1,5 @@
+{
+  "name": "Win11 School Bell System",
+  "description": "A desktop-style school bell management system featuring schedule management, custom ringtone types, and real-time automated playback. Designed with a Windows 11 aesthetic.",
+  "requestFramePermissions": []
+}

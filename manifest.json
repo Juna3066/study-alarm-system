@@ -1,0 +1,15 @@
+{
+  "short_name": "SchoolBell",
+  "name": "校园闹铃系统",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1239/1239608.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#f3f3f3"
+}
