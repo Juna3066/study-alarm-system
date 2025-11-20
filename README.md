@@ -1,4 +1,4 @@
-<div align="center">
+<img width="1879" height="890" alt="image" src="https://github.com/user-attachments/assets/1e81c2eb-aa6a-4307-93b1-cd3c590b486c" /><div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
@@ -19,9 +19,10 @@ View your app in AI Studio: https://ai.studio/apps/drive/1YHf4ffTV6QcDDVufXiZ65s
    `npm run dev`
 
 效果图：
+<img width="1879" height="890" alt="PixPin_2025-11-20_23-42-17" src="https://github.com/user-attachments/assets/0f6c8fc4-2376-44b5-b05c-2f7641d9dad8" />
+
 <img width="1684" height="881" alt="image" src="https://github.com/user-attachments/assets/1ec95180-54ad-48cd-a096-6af100c78280" />
 
-![Uploading image.png…]()
-
 效果图中的配置: [school_bell_config.json](./school_bell_config.json)
+
 效果图中的闹铃计划管理对应的excel文件：[闹铃计划.xlsx](./闹铃计划.xlsx)
