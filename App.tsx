@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { RingtoneType, BellSchedule, AppView, AppData } from './types';
 import { getAudioFile } from './services/db';
@@ -79,6 +80,14 @@ const App: React.FC = () => {
     const interval = setInterval(checkTime, 1000);
     return () => clearInterval(interval);
   }, [schedule, ringtones, lastPlayedMinute]);
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+    }
+    setIsPlaying(false);
+  };
 
   const handleImport = (data: AppData) => {
     setRingtones(data.ringtones);
@@ -178,12 +187,28 @@ const App: React.FC = () => {
          {currentView === AppView.SCHEDULE && <BellManager schedule={schedule} setSchedule={setSchedule} ringtones={ringtones} />}
 
          {isPlaying && (
-             <div className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 animate-bounce z-40">
-                 <span className="relative flex h-3 w-3">
-                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                   <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                 </span>
-                 <span className="font-bold">正在播放铃声...</span>
+             <div className="fixed bottom-8 right-8 z-50 animate-[slideIn_0.3s_ease-out]">
+               <div className="bg-white/80 backdrop-blur-md border border-gray-200 p-2 rounded-full shadow-2xl flex items-center gap-3">
+                 {/* Indicator */}
+                 <div className="bg-green-500 text-white px-5 py-2.5 rounded-full flex items-center gap-3 shadow-inner">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                    </span>
+                    <span className="font-bold text-sm tracking-wide">铃声播放中...</span>
+                 </div>
+
+                 {/* Stop Button */}
+                 <button
+                   onClick={stopAudio}
+                   className="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2 active:scale-95 mr-1"
+                 >
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                     <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-8.5z" />
+                   </svg>
+                   立即停止
+                 </button>
+               </div>
              </div>
          )}
       </main>

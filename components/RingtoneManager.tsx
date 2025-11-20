@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import { RingtoneType } from '../types';
-import { saveAudioFile, deleteAudioFile } from '../services/db';
+import { saveAudioFile, deleteAudioFile, getAudioFile } from '../services/db';
 
 interface RingtoneManagerProps {
   ringtones: RingtoneType[];
@@ -11,12 +12,27 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   
+  // Audio Preview State
+  const [previewId, setPreviewId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(new Audio());
+  const activeUrlRef = useRef<string | null>(null);
+
   // Form State
   const [name, setName] = useState('');
   const [remarks, setRemarks] = useState('');
   const [file, setFile] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (activeUrlRef.current) {
+        URL.revokeObjectURL(activeUrlRef.current);
+      }
+      audioRef.current.pause();
+    };
+  }, []);
 
   const resetForm = () => {
     setName('');
@@ -28,6 +44,7 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
   };
 
   const handleEdit = (item: RingtoneType) => {
+    stopPreview(); // Stop any playing audio before editing
     setEditId(item.id);
     setName(item.name);
     setRemarks(item.remarks);
@@ -37,8 +54,53 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
 
   const handleDelete = async (id: string) => {
     if (confirm('确定要删除该铃声类型吗？此操作不可恢复。')) {
+      if (previewId === id) stopPreview();
       await deleteAudioFile(id);
       setRingtones(prev => prev.filter(r => r.id !== id));
+    }
+  };
+
+  // Audio Preview Logic
+  const stopPreview = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    setPreviewId(null);
+    if (activeUrlRef.current) {
+      URL.revokeObjectURL(activeUrlRef.current);
+      activeUrlRef.current = null;
+    }
+  };
+
+  const handlePreview = async (id: string) => {
+    if (previewId === id) {
+      stopPreview();
+      return;
+    }
+
+    stopPreview(); // Stop currently playing if any
+
+    try {
+      const blob = await getAudioFile(id);
+      if (!blob) {
+        alert('找不到音频文件，请重新上传。');
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      activeUrlRef.current = url;
+      audioRef.current.src = url;
+      
+      // Handle end of playback
+      audioRef.current.onended = () => {
+        stopPreview();
+      };
+
+      await audioRef.current.play();
+      setPreviewId(id);
+    } catch (err) {
+      console.error("Preview failed", err);
+      alert("播放失败，可能是浏览器限制或文件损坏。");
+      stopPreview();
     }
   };
 
@@ -123,6 +185,28 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
                   </td>
                   <td className="p-4 text-slate-500 text-sm">{rt.remarks || '-'}</td>
                   <td className="p-4 text-right space-x-3">
+                    {/* Preview Button */}
+                    <button 
+                      onClick={() => handlePreview(rt.id)} 
+                      className={`font-medium text-sm underline-offset-2 hover:underline flex items-center gap-1 inline-flex ${previewId === rt.id ? 'text-amber-600 hover:text-amber-700' : 'text-green-600 hover:text-green-700'}`}
+                    >
+                      {previewId === rt.id ? (
+                        <>
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                             <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-8.5z" />
+                           </svg>
+                           停止
+                        </>
+                      ) : (
+                        <>
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                             <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                           </svg>
+                           试听
+                        </>
+                      )}
+                    </button>
+                    <span className="text-gray-300">|</span>
                     <button onClick={() => handleEdit(rt)} className="text-blue-600 hover:text-blue-800 font-medium text-sm underline-offset-2 hover:underline">编辑</button>
                     <button onClick={() => handleDelete(rt.id)} className="text-red-500 hover:text-red-700 font-medium text-sm underline-offset-2 hover:underline">删除</button>
                   </td>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css'; // 确保创建此文件并包含 tailwind 指令
+// import './index.css'; // Local build import (commented out for web preview compatibility)
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

@@ -2,6 +2,7 @@
   "name": "school-bell-system",
   "version": "2.0.0",
   "description": "Windows 11 风格校园闹铃系统",
+  "type": "module",
   "main": "main.js",
   "scripts": {
     "dev": "vite",
