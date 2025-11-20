@@ -1,0 +1,292 @@
+{
+  "ringtones": [
+    {
+      "id": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "name": "学校上下课通用铃",
+      "remarks": "",
+      "fileName": "学校上下课通用铃声.mp3"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "2c8ebec5-4faa-48a4-bad7-199e325379bb",
+      "time": "05:30",
+      "name": "起床",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "起床洗漱，整理内务"
+    },
+    {
+      "id": "e05dc810-7ae3-4b46-be08-bae0c467e45f",
+      "time": "05:45",
+      "name": "集合完毕",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "学生会检查迟到情况，跑操"
+    },
+    {
+      "id": "a21e3066-5c0d-4ffe-8549-e236675a2752",
+      "time": "06:00",
+      "name": "早读",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "黄金记忆时间段"
+    },
+    {
+      "id": "37f6422c-a43c-4764-baf7-3c136d5ea153",
+      "time": "06:30",
+      "name": "早读-结束-早饭",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "高三、高二、高一学生依次用餐"
+    },
+    {
+      "id": "bdff088c-e7b2-439e-95a1-e3f5e7c8278e",
+      "time": "07:00",
+      "name": "早饭结束-早预习",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "自由选择学袭科目"
+    },
+    {
+      "id": "ff350a9a-3174-4804-b6b8-d8c9b51a7be8",
+      "time": "07:35",
+      "name": "早预习-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "自由选择学袭科目"
+    },
+    {
+      "id": "a51a9b6d-97e9-415b-9c2d-65fc9231b6ad",
+      "time": "07:45",
+      "name": "第一节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "攻克难题黄金时间"
+    },
+    {
+      "id": "c1d5b06a-192f-4e88-8066-2cc43457f489",
+      "time": "08:25",
+      "name": "第一节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "攻克难题黄金时间"
+    },
+    {
+      "id": "f691ee70-9111-4e8e-ba75-917fb26fd631",
+      "time": "08:35",
+      "name": "第二节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "攻克难题黄金时间"
+    },
+    {
+      "id": "5e261b6c-6784-46eb-ab3b-26757d628886",
+      "time": "09:15",
+      "name": "第二节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "攻克难题黄金时间"
+    },
+    {
+      "id": "3106a9be-b105-401f-af4f-b38993c29aa0",
+      "time": "09:25",
+      "name": "第三节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "攻克难题黄金时间"
+    },
+    {
+      "id": "8417b675-879e-4e7c-a3bf-fee21815ea12",
+      "time": "10:05",
+      "name": "第三节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "攻克难题黄金时间"
+    },
+    {
+      "id": "702b7c02-5220-40e3-9733-1763dc48c4f3",
+      "time": "10:05",
+      "name": "大课间",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "大课间"
+    },
+    {
+      "id": "af140fcc-4804-4a30-8ebd-7f704626511f",
+      "time": "10:30",
+      "name": "大课间-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "大课间"
+    },
+    {
+      "id": "5f56b006-3b6e-46cc-9d6c-02f1478aa8e6",
+      "time": "10:30",
+      "name": "第四节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "每节课40分钟，课间休息10分钟"
+    },
+    {
+      "id": "e4912eef-9eb3-49d7-a4a7-2d83d0b0199f",
+      "time": "11:10",
+      "name": "第四节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "每节课40分钟，课间休息10分钟"
+    },
+    {
+      "id": "dc63c1b9-f02d-4c5e-a6fb-09fa05c0708f",
+      "time": "11:20",
+      "name": "第五节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "每节课40分钟，课间休息11分钟"
+    },
+    {
+      "id": "8cb1c8a5-490c-43f5-a508-b87b3d4e82b8",
+      "time": "12:00",
+      "name": "第五节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "每节课40分钟，课间休息12分钟"
+    },
+    {
+      "id": "27c8f7f9-9816-4620-b2bd-7f09e09db402",
+      "time": "12:00",
+      "name": "午饭",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "排队时也要看书"
+    },
+    {
+      "id": "219dbe6e-2152-424c-8afc-2a45535799a3",
+      "time": "12:45",
+      "name": "午饭-结束-午休",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "排队时也要看书"
+    },
+    {
+      "id": "8b5f6c84-3103-411d-94fb-d96ea09e2b6d",
+      "time": "13:45",
+      "name": "午休-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "必须在规定的时间内躺下"
+    },
+    {
+      "id": "e3c0cd79-9538-4f9e-96ee-78d059f1eef0",
+      "time": "13:50",
+      "name": "每日一歌",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "一般是励志歌曲，鼓舞士气"
+    },
+    {
+      "id": "3bcb1680-09a2-44a8-b7ab-3c3e6065a80b",
+      "time": "14:05",
+      "name": "第六七节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "每节课45分钟"
+    },
+    {
+      "id": "1564ab3c-6d10-40fe-a663-a474d0873581",
+      "time": "15:35",
+      "name": "第六七节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "每节课45分钟"
+    },
+    {
+      "id": "997a6cb4-1d3b-462a-9199-da51cc5face3",
+      "time": "15:35",
+      "name": "眼保健",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "做完操再出教室"
+    },
+    {
+      "id": "c618f1c2-73d9-4910-a36a-9da0742e3869",
+      "time": "15:40",
+      "name": "眼保健-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "做完操再出教室"
+    },
+    {
+      "id": "f5c202d2-1181-48d9-9c73-ec59c0426f14",
+      "time": "15:55",
+      "name": "第八节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "课间休息10分钟"
+    },
+    {
+      "id": "a584ed07-63ab-4500-9d78-1d5164c4cc72",
+      "time": "16:40",
+      "name": "第八节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "课间休息10分钟"
+    },
+    {
+      "id": "e3a6797e-a128-40f3-8e24-b29314dd7cb9",
+      "time": "16:45",
+      "name": "第九节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "课间休息11分钟"
+    },
+    {
+      "id": "c5ccb764-1b38-43ad-8064-4d88966a7740",
+      "time": "17:30",
+      "name": "第九节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "课间休息12分钟"
+    },
+    {
+      "id": "f99e8a8d-4843-4dc9-b2f0-e9231ce58c4e",
+      "time": "17:35",
+      "name": "第十节",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "课间休息13分钟"
+    },
+    {
+      "id": "b01d6267-d7b6-4ba3-a5d7-e88af1240927",
+      "time": "18:15",
+      "name": "第十节-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "课间休息14分钟"
+    },
+    {
+      "id": "2dcf4e66-7dc6-45d0-ba44-cc6228c75907",
+      "time": "18:15",
+      "name": "晚饭",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "吃完饭立刻回教室学袭"
+    },
+    {
+      "id": "1d73a773-9037-4be8-abb4-66a8c6bef811",
+      "time": "18:50",
+      "name": "晚饭-结束",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "吃完饭立刻回教室学袭"
+    },
+    {
+      "id": "6769fd51-ddd9-4768-b7e2-bf0602935fcf",
+      "time": "18:50",
+      "name": "看新闻",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "看新闻积累素材"
+    },
+    {
+      "id": "79b10fff-867b-446f-8fac-816ddafbd66c",
+      "time": "19:10",
+      "name": "看新闻",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "看新闻积累素材"
+    },
+    {
+      "id": "5cdd097c-2599-46c3-ad21-4e804676a107",
+      "time": "19:15",
+      "name": "晚自习",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "自由安排时间"
+    },
+    {
+      "id": "3615ebff-68a7-4096-8df3-93669e0c3e92",
+      "time": "21:50",
+      "name": "晚自习",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "自由安排时间"
+    },
+    {
+      "id": "35a6475a-121c-4084-90bb-8afc26db8e5e",
+      "time": "22:00",
+      "name": "洗漱",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "教室熄灯，22:10前睡觉"
+    },
+    {
+      "id": "34a4b57a-cbb3-4175-9ee3-cf9a246d3bf6",
+      "time": "22:10",
+      "name": "睡觉",
+      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "remarks": "教室熄灯，22:10前睡觉"
+    }
+  ]
+}
