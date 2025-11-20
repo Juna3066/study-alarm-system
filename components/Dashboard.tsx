@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { useEffect, useState, useRef } from 'react';
 import { BellSchedule, RingtoneType } from '../types';
 
 interface DashboardProps {
@@ -10,6 +11,9 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
   const [now, setNow] = useState(new Date());
   const [currentBell, setCurrentBell] = useState<BellSchedule | null>(null);
   const [nextBell, setNextBell] = useState<BellSchedule | null>(null);
+
+  // Ref to store table row elements for auto-scrolling
+  const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map());
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,10 +39,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     let foundCurrentIndex = -1;
 
     // 2. 寻找当前所处闹铃段 (找到最后一个 时间 <= 当前时间 的闹铃)
-    // 例如：当前8:30。列表 8:00, 9:00。
-    // 8:00 <= 8:30 (match index 0)
-    // 9:00 > 8:30
-    // 结果：Current is 8:00
     for (let i = 0; i < sortedSchedule.length; i++) {
       const bell = sortedSchedule[i];
       const [h, m] = bell.time.split(':').map(Number);
@@ -47,7 +47,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
       if (bellTimeValue <= currentTimeValue) {
         foundCurrentIndex = i;
       } else {
-        // 一旦超过当前时间，后面的都不符合“小于等于”，因为列表是有序的
         break;
       }
     }
@@ -57,12 +56,10 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     // 3. 寻找下个闹铃段
     let foundNext = null;
     if (foundCurrentIndex !== -1) {
-      // 如果找到了当前段，下一个就是 index + 1
       if (foundCurrentIndex + 1 < sortedSchedule.length) {
         foundNext = sortedSchedule[foundCurrentIndex + 1];
       }
     } else {
-      // 如果没找到当前段（说明当前时间早于所有闹铃），那么下一个就是列表的第一个
       if (sortedSchedule.length > 0) {
         foundNext = sortedSchedule[0];
       }
@@ -72,6 +69,22 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     setNextBell(foundNext);
 
   }, [now, schedule]);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    // Priority: Scroll to current bell first, otherwise scroll to next bell
+    const targetId = currentBell?.id || nextBell?.id;
+
+    if (targetId) {
+      const element = rowRefs.current.get(targetId);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }
+    }
+  }, [currentBell?.id, nextBell?.id]); // Only trigger when the actual bell segment changes
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('zh-CN', {
@@ -108,7 +121,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
            </svg>
            作息时间表
         </h3>
-        <div className="flex-1 overflow-y-auto pr-2">
+        <div className="flex-1 overflow-y-auto pr-2 scroll-smooth">
           <table className="w-full text-left">
             <thead className="sticky top-0 bg-white/95 backdrop-blur-sm z-10 shadow-sm">
               <tr className="text-gray-500 text-sm border-b border-gray-200">
@@ -125,7 +138,13 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                  const isCurrent = currentBell?.id === bell.id;
                  const isNext = nextBell?.id === bell.id;
                  return (
-                   <tr key={bell.id} className={`
+                   <tr 
+                     key={bell.id} 
+                     ref={(el) => {
+                       if (el) rowRefs.current.set(bell.id, el);
+                       else rowRefs.current.delete(bell.id);
+                     }}
+                     className={`
                      transition-colors hover:bg-blue-50/50
                      ${isCurrent ? 'bg-blue-100/60' : ''} 
                      ${isNext ? 'bg-green-100/60' : ''}
