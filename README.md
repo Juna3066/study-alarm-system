@@ -15,6 +15,13 @@ View your app in AI Studio: https://ai.studio/apps/drive/1YHf4ffTV6QcDDVufXiZ65s
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Run the app:
    `npm run dev`
+
+效果图：
+<img width="1684" height="881" alt="image" src="https://github.com/user-attachments/assets/1ec95180-54ad-48cd-a096-6af100c78280" />
+
+![Uploading image.png…]()
+
+效果图中的配置: [school_bell_config.json](./school_bell_config.json)
+效果图中的闹铃计划管理对应的excel文件：[闹铃计划.xlsx](./闹铃计划.xlsx)
