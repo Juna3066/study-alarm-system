@@ -9,6 +9,7 @@ import DataTransfer from './components/DataTransfer';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
   // Persistent State
   const [ringtones, setRingtones] = useState<RingtoneType[]>(() => {
@@ -105,7 +106,10 @@ const App: React.FC = () => {
     <div className="flex h-screen w-screen bg-[#f3f3f3] text-slate-800 overflow-hidden font-[system-ui]">
       
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col shadow-xl z-20">
+      <aside className={`${
+          isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-10 opacity-0'
+        } transition-all duration-300 ease-in-out bg-white border-r border-gray-200 flex flex-col shadow-xl z-20 whitespace-nowrap overflow-hidden`}>
+        
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center gap-3 text-blue-600">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
@@ -113,7 +117,7 @@ const App: React.FC = () => {
             </svg>
             <h1 className="font-bold text-xl tracking-tight text-slate-800">校园闹铃系统</h1>
           </div>
-          <p className="text-xs text-gray-400 mt-1 ml-1 font-mono">v2.0 (Win11版)</p>
+          <p className="text-xs text-gray-400 mt-1 ml-1 font-mono">v3.1 (Win11版)</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
@@ -160,31 +164,68 @@ const App: React.FC = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 h-full overflow-hidden relative">
+      <main className="flex-1 h-full overflow-hidden relative flex flex-col transition-all duration-300">
          
-         {!audioContextAllowed && (
-            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center">
-               <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md text-center animate-[fadeIn_0.5s_ease-out]">
-                  <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                       <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-                     </svg>
-                  </div>
-                  <h2 className="text-xl font-bold text-gray-800 mb-2">启用音频播放</h2>
-                  <p className="text-gray-500 mb-6">为了确保自动铃声能够正常播放，浏览器需要您的授权。</p>
-                  <button 
-                    onClick={enableAudio}
-                    className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 hover:scale-105 transition-all"
-                  >
-                    开启系统
-                  </button>
-               </div>
+         {/* Top Navigation Header */}
+         <header className="h-14 bg-white/80 backdrop-blur-sm border-b border-gray-200 flex items-center px-4 justify-between shrink-0 z-10">
+            <div className="flex items-center gap-4">
+                <button 
+                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors focus:outline-none"
+                    title={isSidebarOpen ? "收起菜单" : "展开菜单"}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+                
+                {/* Logo appears in header when sidebar is closed */}
+                {!isSidebarOpen && (
+                    <div className="flex items-center gap-2 text-blue-600 animate-[fadeIn_0.3s_ease-out]">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                          <path fillRule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clipRule="evenodd" />
+                        </svg>
+                        <span className="font-bold text-lg text-slate-800">校园闹铃系统</span>
+                    </div>
+                )}
             </div>
-         )}
 
-         {currentView === AppView.DASHBOARD && <Dashboard schedule={schedule} ringtones={ringtones} />}
-         {currentView === AppView.RINGTONES && <RingtoneManager ringtones={ringtones} setRingtones={setRingtones} />}
-         {currentView === AppView.SCHEDULE && <BellManager schedule={schedule} setSchedule={setSchedule} ringtones={ringtones} />}
+            <div className="flex items-center gap-4">
+                 <h2 className="text-base lg:text-lg font-medium text-gray-500">
+                    {currentView === AppView.DASHBOARD && '系统仪表盘'}
+                    {currentView === AppView.RINGTONES && '铃声类型管理'}
+                    {currentView === AppView.SCHEDULE && '闹铃计划管理'}
+                 </h2>
+            </div>
+         </header>
+
+         {/* Views Container */}
+         <div className="flex-1 overflow-hidden relative">
+             
+            {!audioContextAllowed && (
+                <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center">
+                   <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md text-center animate-[fadeIn_0.5s_ease-out]">
+                      <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                           <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                         </svg>
+                      </div>
+                      <h2 className="text-xl font-bold text-gray-800 mb-2">启用音频播放</h2>
+                      <p className="text-gray-500 mb-6">为了确保自动铃声能够正常播放，浏览器需要您的授权。</p>
+                      <button 
+                        onClick={enableAudio}
+                        className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 hover:scale-105 transition-all"
+                      >
+                        开启系统
+                      </button>
+                   </div>
+                </div>
+             )}
+
+             {currentView === AppView.DASHBOARD && <Dashboard schedule={schedule} ringtones={ringtones} />}
+             {currentView === AppView.RINGTONES && <RingtoneManager ringtones={ringtones} setRingtones={setRingtones} />}
+             {currentView === AppView.SCHEDULE && <BellManager schedule={schedule} setSchedule={setSchedule} ringtones={ringtones} />}
+         </div>
 
          {isPlaying && (
              <div className="fixed bottom-8 right-8 z-50 animate-[slideIn_0.3s_ease-out]">
