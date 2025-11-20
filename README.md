@@ -1,28 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 简介
 
-# Run and deploy your AI Studio app
+这是用AI生成的学校闹钟系统，可用于日常学习。
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/drive/1YHf4ffTV6QcDDVufXiZ65sWt4xEuT_p-
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-## 1. Install dependencies:
-   `npm install`
-## 2. Run the app:
-   `npm run dev`
-
-## 在线预览
+## 1.在线预览
 
 [点我](http://alarm.8008088.xyz/)
 
-## 效果图
+
+## 2.本地运行
+
+### 1.克隆项目到本地
+   `git clone https://github.com/Juna3066/study-alarm-system.git`
+
+
+
+
+### 2. 安装依赖
+   
+   **本地电脑安装了:**  Node.js
+
+   项目根目录，运行`npm install`
+
+### 3. 运行项目
+
+   项目根目录，运行`npm run dev`
+
+
+## 3.效果图
 
 ![效果图](./config-info/img/image-1.png)
 
@@ -31,7 +35,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/1YHf4ffTV6QcDDVufXiZ65s
 ![效果图](./config-info/img/image-3.png)
 
 
-## 效果图对应的配置文件
+## 4.效果图对应的配置文件
 
 1. [school_bell_config.json](./config-info/school_bell_config.json)
 
