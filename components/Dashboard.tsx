@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { BellSchedule, RingtoneType } from '../types';
 
@@ -111,12 +110,12 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
   const displaySchedule = [...schedule].sort((a, b) => a.time.localeCompare(b.time));
 
   return (
-    <div className="p-6 h-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div className="p-4 sm:p-6 h-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
       
       {/* 左侧: Bell Schedule (List) */}
-      <div className="lg:col-span-5 glass-panel rounded-2xl p-6 shadow-lg flex flex-col overflow-hidden h-full border-t-4 border-blue-500">
-        <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2 border-b pb-4 border-gray-200">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-600">
+      <div className="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 shadow-lg flex flex-col overflow-hidden h-full border-t-4 border-blue-500">
+        <h3 className="text-lg sm:text-xl font-bold text-gray-700 mb-4 flex items-center gap-2 border-b pb-4 border-gray-200">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600">
              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
            </svg>
            作息时间表
@@ -149,8 +148,8 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                      ${isCurrent ? 'bg-blue-100/60' : ''} 
                      ${isNext ? 'bg-green-100/60' : ''}
                    `}>
-                     <td className="py-3 pl-2 font-mono font-bold text-gray-700 text-lg">{bell.time}</td>
-                     <td className="py-3 font-medium text-gray-800">
+                     <td className="py-3 pl-2 font-mono font-bold text-gray-700 text-base sm:text-lg">{bell.time}</td>
+                     <td className="py-3 font-medium text-gray-800 text-sm sm:text-base">
                        <div className="flex flex-col">
                          <span>{bell.name}</span>
                          <div className="flex gap-1 mt-1">
@@ -171,88 +170,88 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
       </div>
 
       {/* 右侧: 从上往下展示 (时钟 -> 当前段 -> 下个段) */}
-      <div className="lg:col-span-7 flex flex-col gap-6 h-full overflow-y-auto pb-2">
+      <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-6 h-full overflow-y-auto pb-2">
         
         {/* 1. 时钟卡片 */}
-        <div className="glass-panel rounded-2xl p-8 shadow-lg text-center border-t-4 border-indigo-500 bg-gradient-to-br from-white to-indigo-50/50 relative overflow-hidden group">
+        <div className="glass-panel rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg text-center border-t-4 border-indigo-500 bg-gradient-to-br from-white to-indigo-50/50 relative overflow-hidden group">
            <div className="absolute top-0 right-0 p-4 opacity-5 text-indigo-900">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-48 h-48">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-32 h-32 sm:w-48 sm:h-48">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
            </div>
-           <h2 className="text-2xl lg:text-3xl text-gray-500 font-light mb-2 tracking-wide">{formatDate(now)}</h2>
+           <h2 className="text-lg sm:text-2xl lg:text-3xl text-gray-500 font-light mb-2 tracking-wide">{formatDate(now)}</h2>
            <div className="relative z-10">
-             <h1 className="text-7xl lg:text-9xl font-bold text-slate-800 tracking-tighter tabular-nums leading-none mt-2 drop-shadow-sm">
+             <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-slate-800 tracking-tighter tabular-nums leading-none mt-2 drop-shadow-sm">
                {formatTime(now)}
              </h1>
            </div>
         </div>
 
         {/* 2. 当前闹铃段 */}
-        <div className={`glass-panel rounded-2xl p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden
+        <div className={`glass-panel rounded-2xl p-4 sm:p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden
             ${currentBell ? 'border-blue-500 bg-white' : 'border-gray-300 bg-gray-50/50'}`}>
             
              {/* Background Icon */}
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-32 h-32 text-blue-900">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-24 h-24 sm:w-32 sm:h-32 text-blue-900">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                 </svg>
              </div>
 
              <div className="flex items-center justify-between mb-4 relative z-10">
-               <h3 className="text-xl font-bold text-gray-600 flex items-center gap-3">
-                  <span className={`w-4 h-4 rounded-full shadow-sm ${currentBell ? 'bg-blue-500 animate-pulse' : 'bg-gray-300'}`}></span>
+               <h3 className="text-lg sm:text-xl font-bold text-gray-600 flex items-center gap-3">
+                  <span className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-sm ${currentBell ? 'bg-blue-500 animate-pulse' : 'bg-gray-300'}`}></span>
                   当前时段
                </h3>
-               {currentBell && <span className="text-lg font-mono text-blue-700 bg-blue-100 px-4 py-1 rounded-full font-bold shadow-sm">{currentBell.time}</span>}
+               {currentBell && <span className="text-base sm:text-lg font-mono text-blue-700 bg-blue-100 px-3 py-1 sm:px-4 rounded-full font-bold shadow-sm">{currentBell.time}</span>}
              </div>
 
              {currentBell ? (
-               <div className="pl-7 relative z-10">
-                 <div className="text-5xl font-bold text-slate-800">{currentBell.name}</div>
-                 <div className="mt-3 text-gray-500 text-lg flex items-center gap-2 font-medium">
-                   <span className="bg-gray-100 px-2 py-1 rounded text-sm border border-gray-200">
+               <div className="pl-4 sm:pl-7 relative z-10">
+                 <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 break-words">{currentBell.name}</div>
+                 <div className="mt-3 text-gray-500 text-sm sm:text-lg flex items-center gap-2 font-medium">
+                   <span className="bg-gray-100 px-2 py-1 rounded text-xs sm:text-sm border border-gray-200">
                      类型: {getRingtoneName(currentBell.typeId)}
                    </span>
                  </div>
                </div>
              ) : (
-               <div className="text-gray-400 italic py-6 flex items-center justify-center relative z-10">
+               <div className="text-gray-400 italic py-6 flex items-center justify-center relative z-10 text-sm sm:text-base">
                  当前无活动闹铃时段（等待今日首个闹铃）
                </div>
              )}
         </div>
 
         {/* 3. 下个闹铃段 */}
-        <div className={`glass-panel rounded-2xl p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden
+        <div className={`glass-panel rounded-2xl p-4 sm:p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden
             ${nextBell ? 'border-green-500 bg-white' : 'border-gray-300 bg-gray-50/50'}`}>
              
              {/* Background Icon */}
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-32 h-32 text-green-900">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-24 h-24 sm:w-32 sm:h-32 text-green-900">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>
              </div>
 
              <div className="flex items-center justify-between mb-4 relative z-10">
-               <h3 className="text-xl font-bold text-gray-600 flex items-center gap-3">
-                  <span className="w-4 h-4 rounded-full bg-green-500 shadow-sm"></span>
+               <h3 className="text-lg sm:text-xl font-bold text-gray-600 flex items-center gap-3">
+                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-green-500 shadow-sm"></span>
                   下个时段
                </h3>
-                {nextBell && <span className="text-lg font-mono text-green-700 bg-green-100 px-4 py-1 rounded-full font-bold shadow-sm">{nextBell.time}</span>}
+                {nextBell && <span className="text-base sm:text-lg font-mono text-green-700 bg-green-100 px-3 py-1 sm:px-4 rounded-full font-bold shadow-sm">{nextBell.time}</span>}
              </div>
 
               {nextBell ? (
-               <div className="pl-7 relative z-10">
-                 <div className="text-4xl font-bold text-slate-800 opacity-90">{nextBell.name}</div>
-                 <div className="mt-3 text-gray-500 text-lg flex items-center gap-2 font-medium">
-                    <span className="bg-gray-100 px-2 py-1 rounded text-sm border border-gray-200">
+               <div className="pl-4 sm:pl-7 relative z-10">
+                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 opacity-90 break-words">{nextBell.name}</div>
+                 <div className="mt-3 text-gray-500 text-sm sm:text-lg flex items-center gap-2 font-medium">
+                    <span className="bg-gray-100 px-2 py-1 rounded text-xs sm:text-sm border border-gray-200">
                      类型: {getRingtoneName(nextBell.typeId)}
                    </span>
                  </div>
                </div>
              ) : (
-               <div className="text-gray-400 italic py-6 flex items-center justify-center relative z-10">
+               <div className="text-gray-400 italic py-6 flex items-center justify-center relative z-10 text-sm sm:text-base">
                  今日计划已全部完成
                </div>
              )}
