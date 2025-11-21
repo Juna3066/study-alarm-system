@@ -11,11 +11,11 @@
     "electron:dev": "concurrently \"cross-env BROWSER=none npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
     "electron:build": "npm run build && electron-builder"
   },
-  "author": "Your Name",
+  "author": "LiuJunbao",
   "license": "MIT",
   "homepage": "./",
   "build": {
-    "appId": "com.schoolbell.app",
+    "appId": "xyz.8008088.xyz",
     "productName": "校园闹铃系统",
     "copyright": "Copyright © 2024",
     "directories": {
