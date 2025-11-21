@@ -67,7 +67,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
       
       {/* Left: Schedule List */}
       <div className="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 flex flex-col overflow-hidden h-full border-t-4 border-blue-500 dark:border-blue-600">
-        <h3 className="text-lg sm:text-xl font-bold text-slate-700 dark:text-slate-200 mb-4 flex items-center gap-2 border-b pb-4 border-slate-200 dark:border-slate-700/60">
+        <h3 className="text-lg sm:text-xl font-bold text-slate-700 dark:text-slate-200 mb-4 flex items-center gap-2 border-b pb-4 border-slate-200 dark:border-white/10">
            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400">
              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
            </svg>
@@ -75,14 +75,14 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
         </h3>
         <div className="flex-1 overflow-y-auto pr-2 scroll-smooth">
           <table className="w-full text-left">
-            <thead className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm z-10">
-              <tr className="text-slate-500 dark:text-slate-400 text-sm border-b border-slate-200 dark:border-slate-700/60">
+            <thead className="sticky top-0 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-sm z-10">
+              <tr className="text-slate-500 dark:text-slate-400 text-sm border-b border-slate-200 dark:border-white/10">
                 <th className="pb-3 pl-2 font-medium">时间</th>
                 <th className="pb-3 font-medium">名称</th>
                 <th className="pb-3 text-right pr-2 font-medium">类型</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                {sortedSchedule.length === 0 && (
                  <tr><td colSpan={3} className="text-center py-10 text-slate-400 dark:text-slate-500">暂无计划</td></tr>
                )}
@@ -95,9 +95,9 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                      ref={(el) => { if (el) rowRefs.current.set(bell.id, el); else rowRefs.current.delete(bell.id); }}
                      className={`
                      transition-colors duration-200
-                     hover:bg-blue-50/50 dark:hover:bg-slate-800
-                     ${isCurrent ? 'bg-blue-100/60 dark:bg-blue-900/30' : ''} 
-                     ${isNext ? 'bg-green-100/60 dark:bg-emerald-900/20' : ''}
+                     hover:bg-blue-50/50 dark:hover:bg-white/5
+                     ${isCurrent ? 'bg-blue-100/60 dark:bg-blue-500/20' : ''} 
+                     ${isNext ? 'bg-emerald-100/60 dark:bg-emerald-500/20' : ''}
                    `}>
                      <td className={`py-3 pl-2 font-mono font-bold text-base sm:text-lg ${isCurrent ? 'text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300'}`}>{bell.time}</td>
                      <td className="py-3 font-medium text-slate-800 dark:text-slate-200 text-sm sm:text-base">
@@ -110,7 +110,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                        </div>
                      </td>
                      <td className="py-3 text-right text-sm text-slate-500 dark:text-slate-400 pr-2">
-                       <span className={`px-2 py-1 rounded text-xs border ${isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700'}`}>
+                       <span className={`px-2 py-1 rounded text-xs border ${isCurrent ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/30' : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10'}`}>
                          {getRingtoneName(bell.typeId)}
                        </span>
                      </td>
@@ -126,15 +126,17 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
       <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-6 h-full overflow-y-auto pb-2">
         
         {/* Clock Card */}
-        <div className="glass-panel rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg text-center border-t-4 border-indigo-500 dark:border-indigo-500 bg-gradient-to-br from-white to-indigo-50/50 dark:from-slate-800 dark:to-slate-900 relative overflow-hidden group">
+        <div className="glass-panel rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg text-center border-t-4 border-indigo-500 dark:border-indigo-500 bg-gradient-to-br from-white to-indigo-50/50 dark:from-slate-800/50 dark:to-slate-900/80 relative overflow-hidden group">
            <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-[0.03] text-indigo-900 dark:text-white pointer-events-none">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-32 h-32 sm:w-48 sm:h-48">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
            </div>
-           <h2 className="text-lg sm:text-2xl lg:text-3xl text-slate-500 dark:text-slate-400 font-light mb-2 tracking-wide">{formatDate(now)}</h2>
+           {/* Optimized font sizes for narrow screens: text-base starting point */}
+           <h2 className="text-base sm:text-2xl lg:text-3xl text-slate-500 dark:text-slate-400 font-light mb-2 tracking-wide">{formatDate(now)}</h2>
            <div className="relative z-10">
-             <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-slate-800 dark:text-slate-100 tracking-tighter tabular-nums leading-none mt-2 drop-shadow-sm">
+             {/* Optimized font sizes: starting at text-4xl to fit narrow containers */}
+             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold text-slate-800 dark:text-slate-100 tracking-tighter tabular-nums leading-none mt-2 drop-shadow-sm">
                {formatTime(now)}
              </h1>
            </div>
@@ -142,7 +144,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
 
         {/* Current Segment Card */}
         <div className={`glass-panel rounded-2xl p-4 sm:p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden
-            ${currentBell ? 'border-blue-500 bg-white dark:bg-slate-800' : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30'}`}>
+            ${currentBell ? 'border-blue-500 bg-white dark:bg-slate-800/40' : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/20'}`}>
              
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10 dark:opacity-5 pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-24 h-24 sm:w-32 sm:h-32 ${currentBell ? 'text-blue-900 dark:text-blue-300' : 'text-slate-400'}`}>
@@ -151,18 +153,21 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
              </div>
 
              <div className="flex items-center justify-between mb-4 relative z-10">
-               <h3 className="text-lg sm:text-xl font-bold text-slate-600 dark:text-slate-300 flex items-center gap-3">
+               {/* Optimized font size: text-base for narrow screens */}
+               <h3 className="text-base sm:text-xl font-bold text-slate-600 dark:text-slate-300 flex items-center gap-3">
                   <span className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-sm ${currentBell ? 'bg-blue-500 animate-pulse' : 'bg-slate-400 dark:bg-slate-600'}`}></span>
                   当前时段
                </h3>
-               {currentBell && <span className="text-base sm:text-lg font-mono text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/40 px-3 py-1 sm:px-4 rounded-full font-bold shadow-sm">{currentBell.time}</span>}
+               {/* Optimized badge text size */}
+               {currentBell && <span className="text-sm sm:text-lg font-mono text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-500/20 px-3 py-1 sm:px-4 rounded-full font-bold shadow-sm">{currentBell.time}</span>}
              </div>
 
              {currentBell ? (
                <div className="pl-4 sm:pl-7 relative z-10">
-                 <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-white break-words">{currentBell.name}</div>
+                 {/* Optimized font sizes: text-2xl starting point */}
+                 <div className="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-white break-words">{currentBell.name}</div>
                  <div className="mt-3 text-slate-500 dark:text-slate-400 text-sm sm:text-lg flex items-center gap-2 font-medium">
-                   <span className="bg-slate-100 dark:bg-slate-800/80 px-2 py-1 rounded text-xs sm:text-sm border border-slate-200 dark:border-slate-600/50">
+                   <span className="bg-slate-100 dark:bg-white/5 px-2 py-1 rounded text-xs sm:text-sm border border-slate-200 dark:border-white/10">
                      类型: {getRingtoneName(currentBell.typeId)}
                    </span>
                  </div>
@@ -176,7 +181,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
 
         {/* Next Segment Card */}
         <div className={`glass-panel rounded-2xl p-4 sm:p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden
-            ${nextBell ? 'border-emerald-500 bg-white dark:bg-slate-800' : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30'}`}>
+            ${nextBell ? 'border-emerald-500 bg-white dark:bg-slate-800/40' : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/20'}`}>
              
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10 dark:opacity-5 pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-24 h-24 sm:w-32 sm:h-32 ${nextBell ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-400'}`}>
@@ -185,18 +190,21 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
              </div>
 
              <div className="flex items-center justify-between mb-4 relative z-10">
-               <h3 className="text-lg sm:text-xl font-bold text-slate-600 dark:text-slate-300 flex items-center gap-3">
+               {/* Optimized font size */}
+               <h3 className="text-base sm:text-xl font-bold text-slate-600 dark:text-slate-300 flex items-center gap-3">
                   <span className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-sm ${nextBell ? 'bg-emerald-500' : 'bg-slate-400 dark:bg-slate-600'}`}></span>
                   下个时段
                </h3>
-                {nextBell && <span className="text-base sm:text-lg font-mono text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-3 py-1 sm:px-4 rounded-full font-bold shadow-sm">{nextBell.time}</span>}
+                {/* Optimized badge text size */}
+                {nextBell && <span className="text-sm sm:text-lg font-mono text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/20 px-3 py-1 sm:px-4 rounded-full font-bold shadow-sm">{nextBell.time}</span>}
              </div>
 
               {nextBell ? (
                <div className="pl-4 sm:pl-7 relative z-10">
+                 {/* Optimized font sizes */}
                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white opacity-90 break-words">{nextBell.name}</div>
                  <div className="mt-3 text-slate-500 dark:text-slate-400 text-sm sm:text-lg flex items-center gap-2 font-medium">
-                    <span className="bg-slate-100 dark:bg-slate-800/80 px-2 py-1 rounded text-xs sm:text-sm border border-slate-200 dark:border-slate-600/50">
+                    <span className="bg-slate-100 dark:bg-white/5 px-2 py-1 rounded text-xs sm:text-sm border border-slate-200 dark:border-white/10">
                      类型: {getRingtoneName(nextBell.typeId)}
                    </span>
                  </div>
