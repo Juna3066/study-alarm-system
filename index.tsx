@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-// import './index.css'; // Local build import (commented out for web preview compatibility)
+import './index.css'; // Enable local CSS build
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

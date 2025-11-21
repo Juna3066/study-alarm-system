@@ -4,8 +4,10 @@
 
 /* Global Styles */
 body {
-  /* Light: Soft gray | Dark: Deep Slate/Black */
-  @apply bg-[#f3f3f3] dark:bg-[#020617] text-slate-800 dark:text-slate-200 font-sans antialiased overflow-hidden transition-colors duration-300;
+  /* Prioritize local system fonts for offline stability and speed in China */
+  font-family: "Microsoft YaHei", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  @apply bg-[#f3f3f3] dark:bg-[#020617] text-slate-800 dark:text-slate-100 antialiased overflow-hidden transition-colors duration-300;
+  user-select: none;
 }
 
 /* Custom Scrollbar */
@@ -25,9 +27,6 @@ body {
 
 /* Glass Panel Utility Class */
 .glass-panel {
-  /* Light mode: White with high blur and transparency */
   @apply bg-white/90 backdrop-blur-xl border border-white/40 shadow-sm;
-  
-  /* Dark mode: Very dark slate with transparency, subtle border to blend with dark bg */
-  @apply dark:bg-[#1e293b]/70 dark:backdrop-blur-xl dark:border-white/10 dark:shadow-none transition-all duration-300;
+  @apply dark:bg-slate-900/50 dark:backdrop-blur-xl dark:border-white/10 dark:shadow-none transition-all duration-300;
 }
