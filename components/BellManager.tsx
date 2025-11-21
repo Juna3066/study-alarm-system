@@ -71,7 +71,6 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     resetForm();
   };
 
-  // --- Excel Export Logic ---
   const handleExportExcel = () => {
     if (schedule.length === 0) {
       alert("没有可导出的数据。");
@@ -91,7 +90,6 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     XLSX.writeFile(wb, `闹铃计划_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
-  // --- Excel Import Logic ---
   const handleImportExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -168,7 +166,6 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     reader.readAsBinaryString(file);
   };
 
-  // --- Download Template Logic ---
   const handleDownloadTemplate = () => {
     const templateData = [{ '触发时间': '08:00', '闹铃名称': '示例课程', '铃声类型': '上课铃', '备注': '示例备注' }];
     const ws = XLSX.utils.json_to_sheet(templateData);
@@ -183,7 +180,10 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     <div className="p-6 max-w-6xl mx-auto h-full flex flex-col">
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-            <span className="w-2 h-8 bg-blue-600 rounded-full"></span>
+            {/* Removed blue bar, used icon instead for cleaner look in dark mode */}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-blue-600 dark:text-blue-400">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             闹铃计划管理
         </h2>
         
@@ -204,11 +204,11 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden flex-1 flex flex-col">
+      <div className="bg-white dark:bg-[#1e293b]/50 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden flex-1 flex flex-col backdrop-blur-sm">
          <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-sm font-bold tracking-wider">
+              <tr className="bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-sm font-bold tracking-wider">
                 <th className="p-4 w-32">触发时间</th>
                 <th className="p-4">闹铃名称</th>
                 <th className="p-4">铃声类型</th>
@@ -216,14 +216,14 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
                 <th className="p-4 text-right">操作</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
               {sortedSchedule.length === 0 && (
                 <tr><td colSpan={5} className="p-8 text-center text-gray-400 dark:text-gray-500">暂无闹铃计划。</td></tr>
               )}
               {sortedSchedule.map(bell => {
                 const rType = ringtones.find(r => r.id === bell.typeId);
                 return (
-                  <tr key={bell.id} className="hover:bg-blue-50 dark:hover:bg-slate-700/50 transition-colors">
+                  <tr key={bell.id} className="hover:bg-blue-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="p-4 font-mono font-bold text-slate-700 dark:text-slate-200 text-lg">{bell.time}</td>
                     <td className="p-4 font-bold text-slate-800 dark:text-white">{bell.name}</td>
                     <td className="p-4 text-slate-600 dark:text-slate-300">
@@ -244,10 +244,9 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
         </div>
       </div>
 
-      {/* Modal */}
       {isEditing && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-6 animate-[fadeIn_0.2s_ease-out] border border-white/20">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-6 animate-[fadeIn_0.2s_ease-out] border border-white/20 dark:border-slate-700">
             <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-6 border-b border-gray-200 dark:border-slate-700 pb-2">
                 {editId ? '编辑闹铃' : '添加新闹铃'}
             </h3>

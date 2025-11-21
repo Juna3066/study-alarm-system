@@ -4,7 +4,8 @@
 
 /* Global Styles */
 body {
-  @apply bg-[#f3f3f3] dark:bg-[#0f172a] text-slate-800 dark:text-slate-200 font-sans antialiased overflow-hidden transition-colors duration-300;
+  /* Light: Soft gray | Dark: Deep Slate/Black */
+  @apply bg-[#f3f3f3] dark:bg-[#020617] text-slate-800 dark:text-slate-200 font-sans antialiased overflow-hidden transition-colors duration-300;
 }
 
 /* Custom Scrollbar */
@@ -24,9 +25,9 @@ body {
 
 /* Glass Panel Utility Class */
 .glass-panel {
-  /* Light mode: White with slight transparency */
+  /* Light mode: White with high blur and transparency */
   @apply bg-white/90 backdrop-blur-xl border border-white/40 shadow-sm;
   
-  /* Dark mode: Dark slate with transparency, subtle border */
-  @apply dark:bg-slate-900/60 dark:backdrop-blur-xl dark:border-slate-700/50 dark:shadow-none transition-all duration-300;
+  /* Dark mode: Very dark slate with transparency, subtle border to blend with dark bg */
+  @apply dark:bg-[#1e293b]/70 dark:backdrop-blur-xl dark:border-white/10 dark:shadow-none transition-all duration-300;
 }

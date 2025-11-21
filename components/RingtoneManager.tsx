@@ -113,7 +113,10 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
     <div className="p-6 max-w-6xl mx-auto h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-           <span className="w-2 h-8 bg-blue-600 rounded-full"></span>
+           {/* Improved icon styling for dark mode */}
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-blue-600 dark:text-blue-400">
+             <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+           </svg>
            铃声类型管理
         </h2>
         <button onClick={() => { resetForm(); setIsEditing(true); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-medium">
@@ -121,23 +124,23 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
         </button>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden flex-1 flex flex-col">
+      <div className="bg-white dark:bg-[#1e293b]/50 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden flex-1 flex flex-col backdrop-blur-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-sm font-bold tracking-wider">
+              <tr className="bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-sm font-bold tracking-wider">
                 <th className="p-4">类型名称</th>
                 <th className="p-4">铃声文件</th>
                 <th className="p-4">备注</th>
                 <th className="p-4 text-right">操作</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
               {ringtones.length === 0 && (
                 <tr><td colSpan={4} className="p-8 text-center text-gray-400 dark:text-gray-500">暂无铃声类型，请点击右上角添加。</td></tr>
               )}
               {ringtones.map(rt => (
-                <tr key={rt.id} className="hover:bg-blue-50 dark:hover:bg-slate-700/50 transition-colors">
+                <tr key={rt.id} className="hover:bg-blue-50 dark:hover:bg-slate-800/50 transition-colors">
                   <td className="p-4 font-bold text-slate-800 dark:text-white">{rt.name}</td>
                   <td className="p-4 text-slate-600 dark:text-slate-300">
                       <span className="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded border border-slate-200 dark:border-slate-600">{rt.fileName}</span>
@@ -160,7 +163,7 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
 
       {isEditing && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-6 animate-[fadeIn_0.2s_ease-out] border border-white/20">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-6 animate-[fadeIn_0.2s_ease-out] border border-white/20 dark:border-slate-700">
             <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-6 border-b border-gray-200 dark:border-slate-700 pb-2">
                 {editId ? '编辑铃声类型' : '新增铃声类型'}
             </h3>

@@ -7,7 +7,6 @@ import BellManager from './components/BellManager';
 import DataTransfer from './components/DataTransfer';
 
 // --- Web Worker Script ---
-// Creates a blob URL for the worker to run the timer in a separate thread
 const createWorker = () => {
   const script = `
     let intervalId;
@@ -84,7 +83,6 @@ const App: React.FC = () => {
       const currentHM = now.toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit' });
       const seconds = now.getSeconds();
 
-      // Check strictly within the first 2 seconds of the minute to ensure trigger but avoid double trigger
       if (seconds <= 1 && currentHM !== lastPlayedMinute) {
         const match = schedule.find(s => s.time === currentHM);
         if (match) {
@@ -97,7 +95,6 @@ const App: React.FC = () => {
               const fileBlob = await getAudioFile(type.id);
               if (fileBlob) {
                 const url = URL.createObjectURL(fileBlob);
-                // Clean up previous src if exists
                 if (audioRef.current.src) URL.revokeObjectURL(audioRef.current.src);
                 
                 audioRef.current.src = url;
@@ -162,12 +159,12 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#f3f3f3] dark:bg-[#020617] text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300">
       
       {/* Sidebar */}
       <aside className={`${
           isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-10 opacity-0'
-        } transition-all duration-300 ease-in-out bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col shadow-xl z-20 whitespace-nowrap overflow-hidden`}>
+        } transition-all duration-300 ease-in-out bg-white dark:bg-[#0f172a] border-r border-gray-200 dark:border-slate-800 flex flex-col shadow-xl z-20 whitespace-nowrap overflow-hidden`}>
         
         <div className="p-6 border-b border-gray-100 dark:border-slate-800">
           <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
@@ -176,7 +173,7 @@ const App: React.FC = () => {
             </svg>
             <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-white">校园闹铃系统</h1>
           </div>
-          <p className="text-xs text-gray-400 mt-1 ml-1 font-mono">v3.3 (Win11 Pro)</p>
+          <p className="text-xs text-gray-400 mt-1 ml-1 font-mono">v3.5 (Win11 Pro)</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
@@ -197,7 +194,7 @@ const App: React.FC = () => {
           />
         </nav>
         
-        <div className="p-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/50">
+        <div className="p-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-[#0f172a]">
             <DataTransfer ringtones={ringtones} schedule={schedule} onImport={handleImport} />
         </div>
       </aside>
@@ -206,7 +203,7 @@ const App: React.FC = () => {
       <main className="flex-1 h-full overflow-hidden relative flex flex-col transition-all duration-300">
          
          {/* Header */}
-         <header className="h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-slate-800 flex items-center px-4 justify-between shrink-0 z-10 transition-colors">
+         <header className="h-14 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-sm border-b border-gray-200 dark:border-slate-800 flex items-center px-4 justify-between shrink-0 z-10 transition-colors">
             <div className="flex items-center gap-4">
                 <button 
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
