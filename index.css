@@ -4,7 +4,7 @@
 
 /* Global Styles */
 body {
-  @apply bg-[#f3f3f3] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased overflow-hidden transition-colors duration-300;
+  @apply bg-[#f3f3f3] dark:bg-[#0f172a] text-slate-800 dark:text-slate-200 font-sans antialiased overflow-hidden transition-colors duration-300;
 }
 
 /* Custom Scrollbar */
@@ -16,13 +16,17 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-500;
+  @apply bg-slate-400 dark:bg-slate-600;
 }
 
 /* Glass Panel Utility Class */
 .glass-panel {
-  @apply bg-white/85 dark:bg-slate-800/75 backdrop-blur-md border border-white/30 dark:border-white/5 transition-colors duration-300;
+  /* Light mode: White with slight transparency */
+  @apply bg-white/90 backdrop-blur-xl border border-white/40 shadow-sm;
+  
+  /* Dark mode: Dark slate with transparency, subtle border */
+  @apply dark:bg-slate-900/60 dark:backdrop-blur-xl dark:border-slate-700/50 dark:shadow-none transition-all duration-300;
 }
