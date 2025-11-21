@@ -3,7 +3,7 @@
   "name": "校园闹铃系统",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1239/1239608.png",
+      "src": "/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
