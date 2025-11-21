@@ -6,6 +6,12 @@
     <title>校园闹铃系统</title>
     <link rel="manifest" href="/manifest.json" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: {} }
+      }
+    </script>
     <link
       href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap"
       rel="stylesheet"
@@ -15,7 +21,7 @@
         font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         user-select: none;
         overflow: hidden;
-        background-color: #f3f3f3;
+        /* background-color: #f3f3f3; Handled by App.tsx now */
       }
       /* Custom Scrollbar for Tables */
       ::-webkit-scrollbar {
@@ -32,11 +38,27 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
       }
+
+      /* Dark mode scrollbar */
+      .dark ::-webkit-scrollbar-thumb {
+        background: #475569;
+      }
+      .dark ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
+
+      /* Glass Panel - Light */
       .glass-panel {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      /* Glass Panel - Dark */
+      .dark .glass-panel {
+        background: rgba(30, 41, 59, 0.75); /* Slate-800 with opacity */
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
     </style>
   <script type="importmap">

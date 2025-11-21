@@ -4,8 +4,13 @@ export default {
     "./index.html",
     "./**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['"Microsoft YaHei"', '"Segoe UI"', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }

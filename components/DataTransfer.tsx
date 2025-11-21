@@ -9,10 +9,9 @@ interface DataTransferProps {
 }
 
 const DataTransfer: React.FC<DataTransferProps> = ({ ringtones, schedule, onImport }) => {
-  
   const handleExport = () => {
     const data: AppData = {
-      ringtones: ringtones.map(r => ({ ...r, fileBlob: undefined })), // Do not export large blobs to JSON
+      ringtones: ringtones.map(r => ({ ...r, fileBlob: undefined })), 
       schedule
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -36,7 +35,7 @@ const DataTransfer: React.FC<DataTransferProps> = ({ ringtones, schedule, onImpo
         const json = event.target?.result as string;
         const data = JSON.parse(json) as AppData;
         
-        if (confirm("导入操作将覆盖当前所有的闹铃计划和类型设置。\n\n注意：由于浏览器安全限制，音频文件无法包含在导出文件中，导入后您需要重新上传每个类型的音频文件。\n\n是否继续？")) {
+        if (confirm("导入操作将覆盖当前所有的闹铃计划和类型设置。\n\n注意：音频文件无法包含在JSON导出中，导入后您需要重新上传每个类型的音频文件。\n\n是否继续？")) {
             await clearAudioFiles();
             onImport(data);
             alert("配置已成功导入。\n请前往【铃声类型管理】为导入的类型重新上传MP3文件。");
@@ -46,26 +45,18 @@ const DataTransfer: React.FC<DataTransferProps> = ({ ringtones, schedule, onImpo
       }
     };
     reader.readAsText(file);
-    // Reset input
     e.target.value = '';
   };
 
   return (
     <div className="flex flex-col gap-2">
-      <button 
-        onClick={handleExport}
-        className="text-gray-600 hover:text-blue-600 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium w-full whitespace-nowrap"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 flex-shrink-0">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-        </svg>
+      <button onClick={handleExport} className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors text-sm font-medium w-full whitespace-nowrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 flex-shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
         导出配置
       </button>
       
-      <label className="text-gray-600 hover:text-blue-600 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer text-sm font-medium w-full whitespace-nowrap">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 flex-shrink-0">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" transform="rotate(180 12 12)"/>
-        </svg>
+      <label className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors cursor-pointer text-sm font-medium w-full whitespace-nowrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 flex-shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" transform="rotate(180 12 12)"/></svg>
         导入配置
         <input type="file" accept=".json" onChange={handleImport} className="hidden" />
       </label>
