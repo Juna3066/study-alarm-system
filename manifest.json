@@ -8,11 +8,6 @@
       "type": "image/png"
     },
     {
-      "src": "/external-resources/48-48.png",
-      "sizes": "48x48",
-      "type": "image/png"
-    },
-    {
       "src": "/external-resources/72-72.png",
       "sizes": "72x72",
       "type": "image/png"
