@@ -15,156 +15,156 @@
   ],
   "schedule": [
     {
-      "id": "a52f125a-37a0-46e0-a253-f93c7d169271",
+      "id": "1a510be9-0906-44cd-8ddf-cad63b1f5323",
       "time": "08:00",
-      "name": "第一节",
+      "name": "第一节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "a2a2a6ce-c5ed-4455-b4e3-f18cdb48337c",
+      "id": "8b56c6e4-b1c9-4ca3-8a9b-997b29494480",
       "time": "08:45",
-      "name": "第一节",
+      "name": "第一节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "744be23f-a112-4c5d-9f49-65261d5885b1",
+      "id": "5b1d27a6-f959-4ca6-8586-d52f86e922a3",
       "time": "08:55",
-      "name": "第二节",
+      "name": "第二节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "1ef50e8f-0e25-416f-bd2f-e14adc2b6458",
+      "id": "654ca423-9e5d-42eb-8cb2-d58ae63d7d81",
       "time": "09:40",
-      "name": "第二节",
+      "name": "第二节-下课",
       "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": "大课间"
     },
     {
-      "id": "d47bc89a-9cab-4b93-ab41-17ecfb6b3067",
+      "id": "89c6522f-9989-4b7e-9fde-b35d805aeb41",
       "time": "10:00",
-      "name": "第三节",
+      "name": "第三节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "be3d59d3-a3cf-4bc7-9f61-98d503816657",
+      "id": "9e3d71ef-d4b8-4a26-9866-4b753b4423b7",
       "time": "10:45",
-      "name": "第三节",
+      "name": "第三节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "b940274d-2ffc-4389-9ee7-1a114d273a7e",
+      "id": "6653ba23-4db1-461a-bd6c-989f6b52592d",
       "time": "10:55",
-      "name": "第四节",
+      "name": "第四节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "0f6622e0-4b90-4d72-9b61-b23cec12a011",
+      "id": "3507846e-e1cb-4592-a4f8-12e571a6414f",
       "time": "11:40",
-      "name": "第四节",
+      "name": "第四节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "1b61081f-2474-4515-bc03-fdd04325c5cb",
+      "id": "8835fc63-0e59-46a4-aa0f-9658297a404b",
       "time": "11:50",
-      "name": "第五节",
+      "name": "第五节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "24b21549-e7a0-431e-8c14-8c04ae5dc6eb",
+      "id": "7fe5b173-8a92-4917-8cca-f9ff3e6c7bd9",
       "time": "12:35",
-      "name": "第五节",
+      "name": "第五节-下课",
       "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": "午饭午休"
     },
     {
-      "id": "df34cb45-4eaf-41b2-b774-7159c0400a8a",
+      "id": "edd5e54a-44b3-455e-a34c-b4c9a898e12e",
       "time": "14:30",
-      "name": "第六节",
+      "name": "第六节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "5756c5a3-0b51-4756-81fb-0e9220506bfa",
+      "id": "555b60da-1f9e-4117-9610-9f8a8d7079b1",
       "time": "15:15",
-      "name": "第六节",
+      "name": "第六节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "46e7600f-dec2-4c6c-9bb7-7113db9b7d66",
+      "id": "225f2fe1-cc22-4328-b1dc-84fe6f8d3dde",
       "time": "15:25",
-      "name": "第七节",
+      "name": "第七节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "cf7bad45-bc46-43d7-b87a-83bc50a8fc05",
+      "id": "cec77eb1-4b6e-4fe9-9e05-f84a2eba18c4",
       "time": "16:10",
-      "name": "第七节",
+      "name": "第七节-下课",
       "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": "大课间"
     },
     {
-      "id": "a22f6f94-f582-40f9-8984-cdb07148a007",
+      "id": "b90b39dd-3f4b-4eb8-8c76-89c76884dc85",
       "time": "16:30",
-      "name": "第八节",
+      "name": "第八节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "2cb7bb8e-18a8-49bb-80fc-bef851197dba",
+      "id": "a693f123-0872-4255-a686-2556e665d954",
       "time": "17:15",
-      "name": "第八节",
+      "name": "第八节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "2dcd57be-2f48-46d0-b110-944557a67483",
+      "id": "dd39c70f-b590-49af-8395-a55460870274",
       "time": "17:25",
-      "name": "第九节",
+      "name": "第九节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "14e4303a-3950-4473-8e3a-6ca09422ebb9",
+      "id": "a3f73913-5b41-4977-b415-790cf0c81bce",
       "time": "18:10",
-      "name": "第九节",
+      "name": "第九节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "34167e97-fb7b-4d04-9c6d-394bc8b03e01",
+      "id": "ee4f2424-b045-4951-95eb-eae61e47333d",
       "time": "19:00",
-      "name": "第十节",
+      "name": "第十节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "790bc725-e16d-415e-8ecb-986088dede20",
+      "id": "b02588de-2165-4bdc-a399-2f459a91b1e4",
       "time": "19:45",
-      "name": "第十节",
+      "name": "第十节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "bae36e3a-52f0-4986-b549-fc9986e59d3b",
+      "id": "5d2e1606-675e-4a70-af50-052c6f73331d",
       "time": "19:55",
-      "name": "第十一节",
+      "name": "第十一节-上课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": ""
     },
     {
-      "id": "9106b23d-86df-469c-91b9-643af5ca4d6f",
+      "id": "12ce229b-d9fa-46d3-8b21-95fbf87d2693",
       "time": "20:40",
-      "name": "第十一节",
+      "name": "第十一节-下课",
       "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
       "remarks": "11点熄灯"
     }
