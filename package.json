@@ -37,13 +37,14 @@
     }
   },
   "dependencies": {
+    "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.0.0",
