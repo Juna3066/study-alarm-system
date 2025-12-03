@@ -10,6 +10,8 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
   const [now, setNow] = useState(new Date());
   
   // Refs for auto-scrolling
+  // 1. 新增：tableContainerRef 用于获取包裹表格的滚动容器
+  const tableContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map());
 
   // Timer runs every second to update UI
@@ -18,7 +20,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     return () => clearInterval(timer);
   }, []);
 
-  // 1. Memoize sorted schedule to avoid recalculation on every second tick
+  // 1. Memoize sorted schedule
   const sortedSchedule = useMemo(() => {
     return [...schedule].sort((a, b) => {
       const [h1, m1] = a.time.split(':').map(Number);
@@ -49,12 +51,42 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     };
   }, [now, sortedSchedule]);
 
-  // 3. Auto-scroll effect
+  // 3. Calculate Countdown String
+  const countdownText = useMemo(() => {
+    if (!nextBell) return null;
+    
+    const [h, m] = nextBell.time.split(':').map(Number);
+    const target = new Date(now);
+    target.setHours(h, m, 0, 0);
+    
+    const diff = target.getTime() - now.getTime();
+    if (diff < 0) return null; 
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `距离下个时段：${minutes}分${seconds.toString().padStart(2, '0')}秒`;
+  }, [now, nextBell]);
+
+  // 4. Auto-scroll effect (修复版：仅容器内部滚动)
   useEffect(() => {
     const targetId = currentBell?.id || nextBell?.id;
-    if (targetId) {
-      const element = rowRefs.current.get(targetId);
-      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const container = tableContainerRef.current;
+    
+    if (targetId && container) {
+      const row = rowRefs.current.get(targetId);
+      if (row) {
+        // 核心修复逻辑：
+        // 计算目标行相对于容器顶部的偏移量，并减去容器高度的一半，实现"居中"效果
+        // 这种方式只改变容器的 scrollTop，绝对不会触发浏览器的全局滚动
+        const top = row.offsetTop - (container.clientHeight / 2) + (row.clientHeight / 2);
+        
+        container.scrollTo({
+          top: top,
+          behavior: 'smooth'
+        });
+      }
     }
   }, [currentBell?.id, nextBell?.id]);
 
@@ -63,17 +95,18 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
   const getRingtoneName = (typeId: string) => ringtones.find(r => r.id === typeId)?.name || '未知类型';
 
   return (
-    <div className="p-4 sm:p-6 h-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+    <div className="p-4 sm:p-6 h-auto lg:h-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
       
       {/* Left: Schedule List */}
-      <div className="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 flex flex-col overflow-hidden h-full border-t-4 border-blue-500 dark:border-blue-600">
+      <div className="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 flex flex-col overflow-hidden h-96 lg:h-full border-t-4 border-blue-500 dark:border-blue-600 order-last lg:order-first">
         <h3 className="text-lg sm:text-xl font-bold text-slate-700 dark:text-slate-200 mb-4 flex items-center gap-2 border-b pb-4 border-slate-200 dark:border-white/10">
            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400">
              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
            </svg>
            作息时间表
         </h3>
-        <div className="flex-1 overflow-y-auto pr-2 scroll-smooth">
+        {/* 2. 绑定 Ref 到这个滚动容器 */}
+        <div ref={tableContainerRef} className="flex-1 overflow-y-auto pr-2 scroll-smooth">
           <table className="w-full text-left">
             <thead className="sticky top-0 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-sm z-10">
               <tr className="text-slate-500 dark:text-slate-400 text-sm border-b border-slate-200 dark:border-white/10">
@@ -125,7 +158,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
       </div>
 
       {/* Right: Cards */}
-      <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-6 h-full overflow-y-auto pb-2">
+      <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-6 h-auto lg:h-full lg:overflow-y-auto pb-2">
         
         {/* Clock Card */}
         <div className="glass-panel rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg text-center border-t-4 border-indigo-500 dark:border-indigo-500 bg-gradient-to-br from-white to-indigo-50/50 dark:from-slate-800/50 dark:to-slate-900/80 relative overflow-hidden group flex flex-col justify-center items-center min-h-[160px] sm:min-h-[200px]">
@@ -134,26 +167,35 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
            </div>
+           
+           {/* Date Header */}
            <h2 className="text-base sm:text-xl lg:text-3xl text-slate-500 dark:text-slate-400 font-light mb-1 sm:mb-2 tracking-wide z-10">{formatDate(now)}</h2>
+           
+           {/* Main Time */}
            <div className="relative z-10 w-full">
              <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-slate-800 dark:text-slate-100 tracking-tighter tabular-nums leading-tight drop-shadow-sm pb-2">
                {formatTime(now)}
              </h1>
            </div>
+
+           {/* Countdown */}
+           {countdownText && (
+             <h2 className="text-base sm:text-xl lg:text-3xl text-slate-500 dark:text-slate-400 font-light mt-1 sm:mt-2 tracking-wide z-10 animate-pulse">
+               {countdownText}
+             </h2>
+           )}
         </div>
 
-        {/* Current Segment Card - 单行 Flex 布局 */}
+        {/* Current Segment Card */}
         <div className={`glass-panel rounded-2xl p-4 sm:p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden flex items-center justify-between gap-2 sm:gap-4
             ${currentBell ? 'border-blue-500 bg-white dark:bg-slate-800/40' : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/20'}`}>
              
-             {/* 背景图标 */}
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10 dark:opacity-5 pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-20 h-20 sm:w-28 sm:h-28 ${currentBell ? 'text-blue-900 dark:text-blue-300' : 'text-slate-400'}`}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                 </svg>
              </div>
 
-             {/* 左侧：Label */}
              <div className="flex items-center gap-2 sm:gap-3 relative z-10 shrink-0">
                 <span className={`w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full shadow-sm ${currentBell ? 'bg-blue-500 animate-pulse' : 'bg-slate-400 dark:bg-slate-600'}`}></span>
                 <h3 className="text-sm sm:text-lg md:text-xl font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
@@ -161,7 +203,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                 </h3>
              </div>
 
-             {/* 中间：Name (居中，截断) */}
              <div className="flex-1 min-w-0 relative z-10 px-2 flex justify-center">
                {currentBell ? (
                  <div 
@@ -177,15 +218,11 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                )}
              </div>
 
-             {/* 右侧：Tags */}
              {currentBell && (
                <div className="flex items-center gap-2 relative z-10 shrink-0">
-                  {/* 类型标签 - 样式与时间标签保持一致(Pill shape) */}
                   <span className="hidden sm:inline-flex items-center justify-center text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-300 bg-slate-100 dark:bg-white/10 px-3 py-1 rounded-full border border-slate-200 dark:border-white/10 h-7 sm:h-8 whitespace-nowrap">
                     {getRingtoneName(currentBell.typeId)}
                   </span>
-                  
-                  {/* 时间标签 */}
                   <span className="inline-flex items-center justify-center text-xs sm:text-base md:text-lg font-mono text-blue-700 dark:text-blue-100 bg-blue-100 dark:bg-blue-600 px-3 py-1 rounded-full font-bold shadow-sm h-7 sm:h-8 whitespace-nowrap">
                     {currentBell.time}
                   </span>
@@ -193,18 +230,16 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
              )}
         </div>
 
-        {/* Next Segment Card - 单行 Flex 布局 */}
+        {/* Next Segment Card */}
         <div className={`glass-panel rounded-2xl p-4 sm:p-6 shadow-md border-l-8 transition-all duration-500 relative overflow-hidden flex items-center justify-between gap-2 sm:gap-4
             ${nextBell ? 'border-emerald-500 bg-white dark:bg-slate-800/40' : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/20'}`}>
              
-             {/* 背景图标 */}
              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-10 dark:opacity-5 pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-20 h-20 sm:w-28 sm:h-28 ${nextBell ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-400'}`}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>
              </div>
 
-             {/* 左侧：Label */}
              <div className="flex items-center gap-2 sm:gap-3 relative z-10 shrink-0">
                 <span className={`w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full shadow-sm ${nextBell ? 'bg-emerald-500' : 'bg-slate-400 dark:bg-slate-600'}`}></span>
                 <h3 className="text-sm sm:text-lg md:text-xl font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
@@ -212,7 +247,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                 </h3>
              </div>
 
-             {/* 中间：Name (居中，截断) */}
              <div className="flex-1 min-w-0 relative z-10 px-2 flex justify-center">
                {nextBell ? (
                  <div 
@@ -228,15 +262,11 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                )}
              </div>
 
-             {/* 右侧：Tags */}
              {nextBell && (
                 <div className="flex items-center gap-2 relative z-10 shrink-0">
-                   {/* 类型标签 */}
                    <span className="hidden sm:inline-flex items-center justify-center text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-300 bg-slate-100 dark:bg-white/10 px-3 py-1 rounded-full border border-slate-200 dark:border-white/10 h-7 sm:h-8 whitespace-nowrap">
                      {getRingtoneName(nextBell.typeId)}
                    </span>
-                   
-                   {/* 时间标签 */}
                    <span className="inline-flex items-center justify-center text-xs sm:text-base md:text-lg font-mono text-emerald-700 dark:text-emerald-100 bg-emerald-100 dark:bg-emerald-600 px-3 py-1 rounded-full font-bold shadow-sm h-7 sm:h-8 whitespace-nowrap">
                      {nextBell.time}
                    </span>
