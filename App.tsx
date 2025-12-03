@@ -9,10 +9,10 @@ import DataTransfer from './components/DataTransfer';
 // --- 配置区域：在此处修改你的尺寸 ---
 const WINDOW_SIZES = {
   COMPLETE: { width: 1200, height: 1000 }, // 完整模式尺寸
-  MINI:     { width: 390,  height: 850 }   // 迷你模式尺寸 (高度可按需调整)
+  MINI:     { width: 390,  height: 850 }   // 迷你模式尺寸
 };
 
-// --- 类型声明：让 TS 识别 electronAPI ---
+// --- 类型声明 ---
 declare global {
   interface Window {
     electronAPI?: {
@@ -41,6 +41,9 @@ const createWorker = () => {
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  
+  // 判断当前是否在 Electron 环境中（用于控制按钮显示）
+  const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
   
   // --- State Initialization ---
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -74,20 +77,14 @@ const App: React.FC = () => {
   const switchToCompleteMode = () => {
     if (window.electronAPI) {
       window.electronAPI.resizeWindow(WINDOW_SIZES.COMPLETE.width, WINDOW_SIZES.COMPLETE.height);
-      // 切换到完整模式时，通常展开侧边栏比较好看，也可以不加这行
       setIsSidebarOpen(true); 
-    } else {
-      console.warn("Electron API not available");
     }
   };
 
   const switchToMiniMode = () => {
     if (window.electronAPI) {
       window.electronAPI.resizeWindow(WINDOW_SIZES.MINI.width, WINDOW_SIZES.MINI.height);
-      // 切换到迷你模式时，通常收起侧边栏以节省空间
       setIsSidebarOpen(false); 
-    } else {
-      console.warn("Electron API not available");
     }
   };
 
@@ -266,27 +263,29 @@ const App: React.FC = () => {
                     {currentView === AppView.SCHEDULE && '闹铃计划管理'}
                  </h2>
 
-                 {/* --- 新增功能：模式切换按钮 --- */}
-                 <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-800 p-1 rounded-lg mr-2">
-                    <button
-                        onClick={switchToCompleteMode}
-                        className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
-                        title="完整模式"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                          <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zM4 6v12h16V6H4zM6 8h2v8H6V8z" opacity="0.8"/>
-                        </svg>
-                    </button>
-                    <button
-                        onClick={switchToMiniMode}
-                        className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
-                        title="迷你模式"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                          <path d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2zM7 6v12h10V6H7z" opacity="0.8"/>
-                        </svg>
-                    </button>
-                 </div>
+                 {/* --- 新增功能：模式切换按钮（仅在 Electron 环境下显示） --- */}
+                 {isElectron && (
+                     <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-800 p-1 rounded-lg mr-2">
+                        <button
+                            onClick={switchToCompleteMode}
+                            className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
+                            title="完整模式"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                              <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zM4 6v12h16V6H4zM6 8h2v8H6V8z" opacity="0.8"/>
+                            </svg>
+                        </button>
+                        <button
+                            onClick={switchToMiniMode}
+                            className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
+                            title="迷你模式"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                              <path d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2zM7 6v12h10V6H7z" opacity="0.8"/>
+                            </svg>
+                        </button>
+                     </div>
+                 )}
 
                  {/* Dark Mode Toggle */}
                  <button 
