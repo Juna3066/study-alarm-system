@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Electron Builder的安装包输出
+/release/
+# 临时文件夹        
+/temp/              
+/tmp/
+# 测试覆盖率报告
+/coverage/
+# Vite或Webpack缓存     
+/.cache/
