@@ -263,12 +263,12 @@ const App: React.FC = () => {
                     {currentView === AppView.SCHEDULE && '闹铃计划管理'}
                  </h2>
 
-                 {/* --- 新增功能：模式切换按钮（仅在 Electron 环境下显示） --- */}
+                {/* --- 新增功能：模式切换按钮（仅在 Electron 环境下显示） --- */}
                  {isElectron && (
-                     <div className="flex items-center gap-1 bg-gray-100 dark:bg-slate-800 p-1 rounded-lg mr-2">
+                     <div className="flex items-center gap-1 mr-2">
                         <button
                             onClick={switchToCompleteMode}
-                            className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
+                            className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800 transition-colors"
                             title="完整模式"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -277,7 +277,7 @@ const App: React.FC = () => {
                         </button>
                         <button
                             onClick={switchToMiniMode}
-                            className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
+                            className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800 transition-colors"
                             title="迷你模式"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
