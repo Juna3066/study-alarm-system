@@ -1,54 +1,110 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron');
 const path = require('path');
 
-// 处理 Windows 安装/卸载时的快捷方式创建
+// 处理 Windows 安装/卸载时的快捷方式创建 (避免安装后多次启动)
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-let mainWindow;
+let win;
+let tray;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 800,
-    minWidth: 1024,
-    minHeight: 768,
-    title: '校园闹铃系统',
-    icon: path.join(__dirname, 'public/icon.png'), // 需确保 public 文件夹下有图标，否则可注释掉
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false, // 为了简化 IndexedDB 访问，允许渲染进程使用部分 Node 功能
-      webSecurity: false // 允许读取本地 blob/file 协议
-    },
-    autoHideMenuBar: true, // 隐藏默认菜单栏，更像原生应用
-  });
+    win = new BrowserWindow({
+        width: 1200,
+        height: 1000,
+        maxWidth: 1200,
+        maxHeight: 1000,
+        minWidth: 390,
+        minHeight: 440,
+        resizable: true,
+        maximizable: false,
+        title: '校园闹铃系统',
+        // 图标路径修正：开发和生产环境都尽量指向正确位置
+        icon: path.join(__dirname, 'public/icon.ico'), 
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: true,
+            webSecurity: true, // 生产环境建议开启
+            preload: path.join(__dirname, 'preload.js') 
+        },
+        autoHideMenuBar: true,
+    });
 
-  // 开发环境下加载 localhost，生产环境下加载打包后的 html
-  const isDev = !app.isPackaged;
-  
-  if (isDev) {
-    mainWindow.loadURL('http://localhost:5173');
-    mainWindow.webContents.openDevTools(); // 开发模式打开控制台
-  } else {
-    mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'));
-  }
+    // --- 关键修改：环境判断 ---
+    const isDev = !app.isPackaged; // 判断是否是开发模式
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+    if (isDev) {
+        // 开发模式：加载 Vite 服务，实现热更新
+        // win.loadURL('http://localhost:5173');
+        win.webContents.openDevTools(); // 可选：开启调试控制台
+    } else {
+        // 生产模式：加载打包后的文件
+        win.loadFile(path.join(__dirname, 'dist', 'index.html'));
+    }
+
+    win.on('close', (event) => {
+        if (!app.isQuiting) {
+            event.preventDefault();
+            win.hide();
+        }
+    });
+
+    win.on('closed', () => {
+        win = null;
+    });
 }
 
-app.on('ready', createWindow);
+app.whenReady().then(() => {
+    createWindow();
+
+    // 监听窗口尺寸调整指令
+    ipcMain.on('resize-window', (event, width, height) => {
+        if (win) {
+            win.setSize(width, height, true);
+        }
+    });
+
+    // 托盘设置
+    tray = new Tray(path.join(__dirname, 'public', 'icon.ico'));
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: '显示窗口',
+            click: () => {
+                if (win) {
+                    if (win.isMinimized()) win.restore();
+                    win.show(); 
+                    win.focus(); 
+                } else { createWindow(); }
+            }
+        },
+        {
+            label: '退出',
+            click: () => { 
+                app.isQuiting = true;
+                app.quit(); 
+            }
+        }
+    ]);
+    tray.setToolTip('校园闹铃系统');
+    tray.setContextMenu(contextMenu);
+    tray.on('click', () => {
+        if (win) { 
+            if (win.isMinimized()) win.restore();
+            win.show(); 
+            win.focus(); 
+        } else { createWindow(); }
+    });
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+    if (process.platform !== 'darwin') { 
+        // 保持后台运行，除非用户显式退出托盘
+    }
 });
 
 app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
+    if (win === null) {
+        createWindow();
+    }
 });

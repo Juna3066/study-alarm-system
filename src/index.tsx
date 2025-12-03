@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css'; // Enable local CSS build
+// 关键：必须引入 CSS，否则 Tailwind 不生效
+import './index.css'; 
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
