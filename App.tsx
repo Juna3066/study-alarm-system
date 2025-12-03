@@ -9,7 +9,7 @@ import DataTransfer from './components/DataTransfer';
 // --- 配置区域：在此处修改你的尺寸 ---
 const WINDOW_SIZES = {
   COMPLETE: { width: 1200, height: 1000 }, // 完整模式尺寸
-  MINI:     { width: 390,  height: 420 }   // 迷你模式尺寸
+  MINI:     { width: 390,  height: 440 }   // 迷你模式尺寸
 };
 
 // --- 类型声明 ---

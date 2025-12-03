@@ -11,7 +11,7 @@ function createWindow() {
         maxWidth: 1200,
         maxHeight: 1000,
         minWidth: 390,
-        minHeight: 710,
+        minHeight: 440,
         resizable: true,
         maximizable: false,
         title: '校园闹铃系统',
