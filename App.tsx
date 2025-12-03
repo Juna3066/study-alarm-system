@@ -173,7 +173,7 @@ const App: React.FC = () => {
             </svg>
             <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-white">校园闹铃系统</h1>
           </div>
-          <p className="text-xs text-gray-400 mt-1 ml-1 font-mono">v3.5 (Win11 Pro)</p>
+          {/* <p className="text-xs text-gray-400 mt-1 ml-1 font-mono">v3.5 (Win11 Pro)</p> */}
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
