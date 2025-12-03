@@ -48,10 +48,21 @@ my-electron-app/
 
 涉及的依赖说明
 
+如果election相关依赖报错，删除package.json中electron,electron-packager版本信息，重新安装。
+
+```json
+  "devDependencies": {
+    "electron": "^39.2.4", 
+    "electron-packager": "^17.1.2"
+  }
+```
+
+重新安装命令
+
 ```bash
 npm install electron --save-dev
 npm install electron-packager --save-dev
-npx electron-packager . SchoolBell --platform=win32 --arch=x64 --out=dist --overwrite --icon=build/icon.ico
+npx electron-packager . study-alarm-system-v1.0.0 --platform=win32 --arch=x64 --out=release --overwrite --icon=external-resources/icon.ico
 ```
 
 
