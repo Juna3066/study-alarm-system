@@ -102,10 +102,12 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                      <td className={`py-3 pl-2 font-mono font-bold text-base sm:text-lg ${isCurrent ? 'text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300'}`}>{bell.time}</td>
                      <td className="py-3 font-medium text-slate-800 dark:text-slate-200 text-sm sm:text-base">
                        <div className="flex flex-col">
-                         <span>{bell.name}</span>
-                         <div className="flex gap-1 mt-1">
-                            {isCurrent && <span className="text-[10px] bg-blue-500 dark:bg-blue-600 text-white px-1.5 py-0.5 rounded font-bold shadow-sm">当前</span>}
-                            {isNext && <span className="text-[10px] bg-emerald-500 dark:bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold shadow-sm">下个</span>}
+                         <div className="flex items-center gap-2">
+                           <span>{bell.name}</span>
+                           <div className="flex gap-1">
+                             {isCurrent && <span className="text-[10px] bg-blue-500 dark:bg-blue-600 text-white px-1.5 py-0.5 rounded font-bold shadow-sm">当前</span>}
+                             {isNext && <span className="text-[10px] bg-emerald-500 dark:bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold shadow-sm">下个</span>}
+                           </div>
                          </div>
                        </div>
                      </td>
