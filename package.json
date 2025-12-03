@@ -16,7 +16,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "dist:win": "npm run build && electron-builder --win nsis --config.directories.output=release/v${version}/setup",
-    "dist:portable": "npm run build && electron-builder --win portable --config.directories.output=release/v${version}/portable"
+    "dist:portable": "npm run build && electron-builder --win portable --config.directories.output=release/v${version}/portable --config.portable.artifactName='${productName}-Portable-v${version}.${ext}'"
   },
   "author": "LiuJunbao<juna3066@gmail.com>",
   "license": "Apache-2.0",
@@ -37,6 +37,10 @@
       {
         "from": "default",
         "to": "default"
+      },
+      {
+        "from": "public/icon.ico",
+        "to": "icon.ico"
       }
     ],
     "win": {

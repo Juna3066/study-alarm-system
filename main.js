@@ -36,7 +36,7 @@ function createWindow() {
 
     if (isDev) {
         // 开发模式：加载 Vite 服务，实现热更新
-        // win.loadURL('http://localhost:5173');
+        win.loadURL('http://localhost:5173');
         win.webContents.openDevTools(); // 可选：开启调试控制台
     } else {
         // 生产模式：加载打包后的文件
@@ -66,7 +66,8 @@ app.whenReady().then(() => {
     });
 
     // 托盘设置
-    tray = new Tray(path.join(__dirname, 'public', 'icon.ico'));
+    // tray = new Tray(path.join(__dirname, 'public', 'icon.ico'));
+    tray = new Tray(path.join(process.resourcesPath, 'icon.ico'));
     const contextMenu = Menu.buildFromTemplate([
         {
             label: '显示窗口',
