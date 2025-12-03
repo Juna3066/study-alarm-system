@@ -2,15 +2,21 @@
   "ringtones": [
     {
       "id": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
-      "name": "通用铃-1",
-      "remarks": "传统的",
-      "fileName": "通用铃-1.mp3"
+      "name": "上课铃",
+      "remarks": "",
+      "fileName": "通用铃-传统-专注.mp3"
     },
     {
       "id": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
-      "name": "通用铃-2",
-      "remarks": "好听的",
-      "fileName": "通用铃-2.mp3"
+      "name": "下课铃",
+      "remarks": "",
+      "fileName": "通用铃-传统-休息.mp3"
+    },
+    {
+      "id": "68ecc6df-73af-4ebb-a8ba-311edf07fc61",
+      "name": "活动铃",
+      "remarks": "",
+      "fileName": "通用铃-悦耳-休息.mp3"
     }
   ],
   "schedule": [
@@ -25,7 +31,7 @@
       "id": "8b56c6e4-b1c9-4ca3-8a9b-997b29494480",
       "time": "08:45",
       "name": "第一节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -39,7 +45,7 @@
       "id": "654ca423-9e5d-42eb-8cb2-d58ae63d7d81",
       "time": "09:40",
       "name": "第二节-下课",
-      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
+      "typeId": "68ecc6df-73af-4ebb-a8ba-311edf07fc61",
       "remarks": "大课间"
     },
     {
@@ -53,7 +59,7 @@
       "id": "9e3d71ef-d4b8-4a26-9866-4b753b4423b7",
       "time": "10:45",
       "name": "第三节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -67,7 +73,7 @@
       "id": "3507846e-e1cb-4592-a4f8-12e571a6414f",
       "time": "11:40",
       "name": "第四节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -81,7 +87,7 @@
       "id": "7fe5b173-8a92-4917-8cca-f9ff3e6c7bd9",
       "time": "12:35",
       "name": "第五节-下课",
-      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
+      "typeId": "68ecc6df-73af-4ebb-a8ba-311edf07fc61",
       "remarks": "午饭午休"
     },
     {
@@ -95,7 +101,7 @@
       "id": "555b60da-1f9e-4117-9610-9f8a8d7079b1",
       "time": "15:15",
       "name": "第六节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -109,7 +115,7 @@
       "id": "cec77eb1-4b6e-4fe9-9e05-f84a2eba18c4",
       "time": "16:10",
       "name": "第七节-下课",
-      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
+      "typeId": "68ecc6df-73af-4ebb-a8ba-311edf07fc61",
       "remarks": "大课间"
     },
     {
@@ -123,7 +129,7 @@
       "id": "a693f123-0872-4255-a686-2556e665d954",
       "time": "17:15",
       "name": "第八节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -137,7 +143,7 @@
       "id": "a3f73913-5b41-4977-b415-790cf0c81bce",
       "time": "18:10",
       "name": "第九节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -151,7 +157,7 @@
       "id": "b02588de-2165-4bdc-a399-2f459a91b1e4",
       "time": "19:45",
       "name": "第十节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "eab3f6ac-20e3-4e29-9951-8cd6e9e40e34",
       "remarks": ""
     },
     {
@@ -165,7 +171,7 @@
       "id": "12ce229b-d9fa-46d3-8b21-95fbf87d2693",
       "time": "20:40",
       "name": "第十一节-下课",
-      "typeId": "2f4c5fcc-6746-4dc7-b2ba-6b00c249ee45",
+      "typeId": "68ecc6df-73af-4ebb-a8ba-311edf07fc61",
       "remarks": "11点熄灯"
     }
   ]
