@@ -111,15 +111,23 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
 
   return (
     <div className="p-6 max-w-6xl mx-auto h-full flex flex-col">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-           {/* Improved icon styling for dark mode */}
+      {/* 修复布局：使用 flex-wrap 代替 flex-col
+         1. flex-wrap: 允许内容自动换行，而不是强制垂直排列。
+         2. items-center: 保持垂直居中对齐。
+         3. justify-between: 标题在左，按钮在右。
+      */}
+      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 whitespace-nowrap">
            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-blue-600 dark:text-blue-400">
              <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
            </svg>
            铃声类型管理
         </h2>
-        <button onClick={() => { resetForm(); setIsEditing(true); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-medium">
+        {/* 修复按钮：移除 w-full
+           1. 移除了 w-full sm:w-auto，现在它是自然宽度。
+           2. 添加 shrink-0 防止被标题挤压。
+        */}
+        <button onClick={() => { resetForm(); setIsEditing(true); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 font-medium whitespace-nowrap shrink-0">
           新增类型
         </button>
       </div>
@@ -129,10 +137,10 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-sm font-bold tracking-wider">
-                <th className="p-4">类型名称</th>
-                <th className="p-4">铃声文件</th>
-                <th className="p-4">备注</th>
-                <th className="p-4 text-right">操作</th>
+                <th className="p-4 whitespace-nowrap">类型名称</th>
+                <th className="p-4 whitespace-nowrap">铃声文件</th>
+                <th className="p-4 whitespace-nowrap">备注</th>
+                <th className="p-4 text-right whitespace-nowrap">操作</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
@@ -141,12 +149,14 @@ const RingtoneManager: React.FC<RingtoneManagerProps> = ({ ringtones, setRington
               )}
               {ringtones.map(rt => (
                 <tr key={rt.id} className="hover:bg-blue-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td className="p-4 font-bold text-slate-800 dark:text-white">{rt.name}</td>
-                  <td className="p-4 text-slate-600 dark:text-slate-300">
-                      <span className="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded border border-slate-200 dark:border-slate-600">{rt.fileName}</span>
+                  <td className="p-4 font-bold text-slate-800 dark:text-white whitespace-nowrap">{rt.name}</td>
+                  <td className="p-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                      <span className="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded border border-slate-200 dark:border-slate-600">
+                        {rt.fileName}
+                      </span>
                   </td>
-                  <td className="p-4 text-slate-500 dark:text-slate-400 text-sm">{rt.remarks || '-'}</td>
-                  <td className="p-4 text-right space-x-3">
+                  <td className="p-4 text-slate-500 dark:text-slate-400 text-sm min-w-[150px]">{rt.remarks || '-'}</td>
+                  <td className="p-4 text-right space-x-3 whitespace-nowrap">
                     <button onClick={() => handlePreview(rt.id)} className={`font-medium text-sm inline-flex items-center gap-1 ${previewId === rt.id ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400'}`}>
                       {previewId === rt.id ? '停止' : '试听'}
                     </button>
