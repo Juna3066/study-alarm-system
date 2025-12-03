@@ -99,19 +99,27 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                      ${isCurrent ? 'bg-blue-100/60 dark:bg-blue-500/20' : ''} 
                      ${isNext ? 'bg-emerald-100/60 dark:bg-emerald-500/20' : ''}
                    `}>
-                     <td className={`py-3 pl-2 font-mono font-bold text-base sm:text-lg ${isCurrent ? 'text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300'}`}>{bell.time}</td>
-                     <td className="py-3 font-medium text-slate-800 dark:text-slate-200 text-sm sm:text-base">
+                     {/* 修复：时间列添加 whitespace-nowrap */}
+                     <td className={`py-3 pl-2 font-mono font-bold text-base sm:text-lg whitespace-nowrap ${isCurrent ? 'text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300'}`}>{bell.time}</td>
+                     
+                     {/* 修复：名称列添加宽度限制和 truncate */}
+                     <td className="py-3 font-medium text-slate-800 dark:text-slate-200 text-sm sm:text-base max-w-[6rem] sm:max-w-none">
                        <div className="flex flex-col">
                          <div className="flex items-center gap-2">
-                           <span>{bell.name}</span>
-                           <div className="flex gap-1">
+                           {/* 添加 truncate 和 title */}
+                           <span className="truncate" title={bell.name}>{bell.name}</span>
+                           
+                           {/* 添加 shrink-0 防止标签被挤扁 */}
+                           <div className="flex gap-1 shrink-0">
                              {isCurrent && <span className="text-[10px] bg-blue-500 dark:bg-blue-600 text-white px-1.5 py-0.5 rounded font-bold shadow-sm">当前</span>}
                              {isNext && <span className="text-[10px] bg-emerald-500 dark:bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold shadow-sm">下个</span>}
                            </div>
                          </div>
                        </div>
                      </td>
-                     <td className="py-3 text-right text-sm text-slate-500 dark:text-slate-400 pr-2">
+
+                     {/* 修复：类型列添加 whitespace-nowrap */}
+                     <td className="py-3 text-right text-sm text-slate-500 dark:text-slate-400 pr-2 whitespace-nowrap">
                        <span className={`px-2 py-1 rounded text-xs border ${isCurrent ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/30' : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10'}`}>
                          {getRingtoneName(bell.typeId)}
                        </span>
@@ -136,7 +144,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
            </div>
            <h2 className="text-base sm:text-xl lg:text-3xl text-slate-500 dark:text-slate-400 font-light mb-1 sm:mb-2 tracking-wide z-10">{formatDate(now)}</h2>
            <div className="relative z-10 w-full">
-             {/* Adjusted sizes: text-4xl for mobile, leading-tight to prevent clipping */}
              <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-slate-800 dark:text-slate-100 tracking-tighter tabular-nums leading-tight drop-shadow-sm pb-2">
                {formatTime(now)}
              </h1>
@@ -163,7 +170,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
 
              {currentBell ? (
                <div className="pl-2 sm:pl-4 relative z-10">
-                 {/* Adjusted text size for mobile: text-2xl */}
                  <div className="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-white break-words leading-tight">{currentBell.name}</div>
                  <div className="mt-2 sm:mt-3 text-slate-500 dark:text-slate-400 text-xs sm:text-sm md:text-lg flex items-center gap-2 font-medium">
                    <span className="bg-slate-100 dark:bg-white/5 px-2 py-1 rounded text-xs sm:text-sm border border-slate-200 dark:border-white/10">
@@ -198,7 +204,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
 
               {nextBell ? (
                <div className="pl-2 sm:pl-4 relative z-10">
-                 {/* Adjusted text size for mobile: text-2xl */}
                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white opacity-90 break-words leading-tight">{nextBell.name}</div>
                  <div className="mt-2 sm:mt-3 text-slate-500 dark:text-slate-400 text-xs sm:text-sm md:text-lg flex items-center gap-2 font-medium">
                     <span className="bg-slate-100 dark:bg-white/5 px-2 py-1 rounded text-xs sm:text-sm border border-slate-200 dark:border-white/10">
