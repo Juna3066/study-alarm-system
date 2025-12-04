@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闹铃悬浮窗</title>
+</head>
+
+<body style="overflow: hidden; user-select: none;"
+    class="bg-transparent m-0 p-0 text-white flex justify-center items-center h-full">
+
+    <div id="app"
+        class="w-[200px] h-[100px] bg-gray-900 bg-opacity-80 backdrop-blur-sm rounded-lg shadow-2xl p-3 flex flex-col justify-center items-center text-center">
+        <div id="drag-region" style="-webkit-app-region: drag;" class="w-full h-full absolute top-0 left-0"></div>
+
+        <div class="z-10 relative pointer-events-none w-full flex flex-col justify-center items-center space-y-0.5">
+
+            <div id="current-date" class="text-sm text-gray-400 font-medium truncate">XX年XX月XX日 周X</div>
+
+            <div id="system-time" class="text-xl font-bold text-white leading-tight">08时30分</div>
+
+            <div id="current-phase" class="text-sm text-white truncate leading-tight mt-1">第一节上课 (30分前)</div>
+
+            <div id="next-phase" class="text-sm text-white text-opacity-80">第一节下课 (10分后)</div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/floating-entry.js"></script>
+</body>
+
+</html>

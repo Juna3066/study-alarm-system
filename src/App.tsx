@@ -59,10 +59,15 @@ const createWorker = () => {
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
+  
+  // 【状态修改】：isSidebarOpen 初始值不变，但其行为会被 isMiniMode 约束
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
   // 判断是否为 Electron 环境
   const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
+  
+  // 【新增状态】：追踪当前是否处于迷你模式
+  const [isMiniMode, setIsMiniMode] = useState(false); // 默认完整模式
   
   // --- State Initialization ---
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -94,20 +99,28 @@ const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(new Audio());
   const workerRef = useRef<Worker | null>(null);
 
-  // --- Functions ---
-  const switchToCompleteMode = () => {
-    if (window.electronAPI) {
-      window.electronAPI.resizeWindow(WINDOW_SIZES.COMPLETE.width, WINDOW_SIZES.COMPLETE.height);
-      setIsSidebarOpen(true); 
-    }
-  };
+  // 【新增计算属性】：侧边栏的实际状态，受 isMiniMode 约束
+  const effectiveIsSidebarOpen = isMiniMode ? false : isSidebarOpen;
 
-  const switchToMiniMode = () => {
-    if (window.electronAPI) {
-      window.electronAPI.resizeWindow(WINDOW_SIZES.MINI.width, WINDOW_SIZES.MINI.height);
-      setIsSidebarOpen(false); 
-    }
+  // --- Functions ---
+  // 【重构/合并】：单一的模式切换函数
+  const toggleWindowMode = () => {
+    if (!window.electronAPI) return;
+
+    // 目标状态是当前状态的反向
+    const nextMiniMode = !isMiniMode;
+    
+    // 1. 执行窗口尺寸调整
+    const targetSize = nextMiniMode ? WINDOW_SIZES.MINI : WINDOW_SIZES.COMPLETE;
+    window.electronAPI.resizeWindow(targetSize.width, targetSize.height);
+
+    // 2. 更新状态
+    setIsMiniMode(nextMiniMode);
+    
+    // 3. 联动侧边栏：迷你模式 (true) -> 侧边栏关闭 (false)
+    setIsSidebarOpen(!nextMiniMode); 
   };
+  // 【删除】：原有的 switchToCompleteMode 和 switchToMiniMode
 
   // --- Effects ---
   useEffect(() => {
@@ -209,7 +222,8 @@ const App: React.FC = () => {
       
       {/* Sidebar */}
       <aside className={`${
-          isSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-10 opacity-0'
+          // 【使用计算属性】: 侧边栏的显示/隐藏现在由 effectiveIsSidebarOpen 控制
+          effectiveIsSidebarOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-10 opacity-0'
         } transition-all duration-300 ease-in-out bg-white dark:bg-[#0f172a] border-r border-gray-200 dark:border-slate-800 flex flex-col shadow-xl z-20 whitespace-nowrap overflow-hidden`}>
         <div className="p-6 border-b border-gray-100 dark:border-slate-800">
           <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
@@ -232,10 +246,15 @@ const App: React.FC = () => {
       <main className="flex-1 h-full overflow-hidden relative flex flex-col transition-all duration-300">
          <header className="h-14 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-sm border-b border-gray-200 dark:border-slate-800 flex items-center px-4 justify-between shrink-0 z-10 transition-colors">
             <div className="flex items-center gap-4">
-                <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg text-gray-600 dark:text-gray-300 transition-colors focus:outline-none">
+                {/* 侧边栏开关，在迷你模式下禁用并变灰 */}
+                <button 
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+                  disabled={isMiniMode}
+                  className={`p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg text-gray-600 dark:text-gray-300 transition-colors focus:outline-none ${isMiniMode ? 'opacity-50 cursor-not-allowed' : ''}`}> 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
                 </button>
-                {!isSidebarOpen && (
+                {/* 侧边栏关闭时显示标题 */}
+                {!effectiveIsSidebarOpen && (
                     <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 animate-[fadeIn_0.3s_ease-out]">
                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path fillRule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clipRule="evenodd" /></svg>
                         <span className="font-bold text-lg text-slate-800 dark:text-white">校园闹铃系统</span>
@@ -250,16 +269,22 @@ const App: React.FC = () => {
                     {currentView === AppView.SCHEDULE && '闹铃计划管理'}
                  </h2>
 
-                 {/* --- 修复样式：无背景，与右侧按钮一致 --- */}
+                 {/* --- 窗口模式切换 (Electron) --- */}
                  {isElectron && (
-                     <div className="flex items-center gap-1 mr-2">
-                        <button onClick={switchToCompleteMode} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800 transition-colors" title="完整模式">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zM4 6v12h16V6H4zM6 8h2v8H6V8z" opacity="0.8"/></svg>
-                        </button>
-                        <button onClick={switchToMiniMode} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800 transition-colors" title="迷你模式">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2zM7 6v12h10V6H7z" opacity="0.8"/></svg>
-                        </button>
-                     </div>
+                     // 单一按钮切换模式
+                     <button 
+                         onClick={toggleWindowMode}
+                         className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800 transition-colors" 
+                         title={isMiniMode ? "切换到完整模式" : "切换到迷你模式"}
+                     >
+                        {isMiniMode ? (
+                           // 当前是迷你模式，显示完整模式图标 (点击后切换)
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zM4 6v12h16V6H4zM6 8h2v8H6V8z" opacity="0.8"/></svg>
+                        ) : (
+                           // 当前是完整模式，显示迷你模式图标 (点击后切换)
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2zM7 6v12h10V6H7z" opacity="0.8"/></svg>
+                        )}
+                     </button>
                  )}
 
                  <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800 transition-colors" title={isDarkMode ? "切换到白天模式" : "切换到黑夜模式"}>

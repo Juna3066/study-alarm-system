@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 1. 强制 Body 背景透明（解决悬浮窗的白边问题） */
+html, body {
+  /* 确保整个 HTML/BODY 元素完全填充窗口 */
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  
+  /* 关键：将 body/html 背景设置为完全透明 */
+  background-color: transparent !important;
+}
+
 /* Global Styles */
 body {
   /* Prioritize local system fonts for offline stability and speed in China */

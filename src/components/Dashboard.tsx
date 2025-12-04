@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { BellSchedule, RingtoneType } from '../types';
 
 interface DashboardProps {
@@ -10,7 +10,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
   const [now, setNow] = useState(new Date());
   
   // Refs for auto-scrolling
-  // 1. 新增：tableContainerRef 用于获取包裹表格的滚动容器
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map());
 
@@ -51,25 +50,85 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     };
   }, [now, sortedSchedule]);
 
-  // 3. Calculate Countdown String
-  const countdownText = useMemo(() => {
-    if (!nextBell) return null;
+  // 3. Calculate Countdown String (Time remaining until next bell)
+  const countdownData = useMemo(() => {
+    if (!nextBell) return { text: null, remainingMinutes: 0 };
     
     const [h, m] = nextBell.time.split(':').map(Number);
     const target = new Date(now);
     target.setHours(h, m, 0, 0);
     
     const diff = target.getTime() - now.getTime();
-    if (diff < 0) return null; 
+    if (diff < 0) return { text: null, remainingMinutes: 0 }; 
 
     const totalSeconds = Math.floor(diff / 1000);
+    const totalMinutes = Math.ceil(totalSeconds / 60);
+
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
 
-    return `距离下个时段：${minutes}分${seconds.toString().padStart(2, '0')}秒`;
+    return {
+        text: `距离下个时段：${minutes}分${seconds.toString().padStart(2, '0')}秒`,
+        remainingMinutes: totalMinutes
+    };
   }, [now, nextBell]);
+  
+  // 4. Calculate Elapsed Time for current bell
+  const elapsedMinutes = useMemo(() => {
+    if (!currentBell) return 0;
 
-  // 4. Auto-scroll effect (修复版：仅容器内部滚动)
+    const [h, m] = currentBell.time.split(':').map(Number);
+    const target = new Date(now);
+    target.setHours(h, m, 0, 0);
+
+    const diff = now.getTime() - target.getTime(); 
+    if (diff < 0) return 0; 
+
+    return Math.floor(diff / 1000 / 60);
+  }, [now, currentBell]);
+
+
+  // ⬇️ 5. 【核心 IPC PUSH Handler: 主动推送数据给 Main Process】 ⬇️
+  useEffect(() => {
+    const electronApi = (window as any).electronAPI;
+    if (!electronApi || !electronApi.sendDashboardDataUpdate) return;
+
+    // Helper to calculate and format the 4-row data structure
+    const pushDataToMain = () => {
+        const currentPhaseTimeElapsed = elapsedMinutes > 0 
+            ? `${elapsedMinutes}分前` 
+            : (currentBell ? '刚刚开始' : '无排课');
+            
+        const nextPhaseTimeRemaining = countdownData.remainingMinutes > 0 
+            ? `${countdownData.remainingMinutes}分后` 
+            : (nextBell ? '即将开始' : '计划完成');
+
+        const dataForFloatWindow = {
+            currentDate: now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }),
+            systemTime: now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }).replace(':', '时') + '分',
+            currentPhaseDisplay: currentBell 
+                ? `${currentBell.name} (${currentPhaseTimeElapsed})` 
+                : '当前阶段：无数据',
+            nextPhaseDisplay: nextBell
+                ? `${nextBell.name} (${nextPhaseTimeRemaining})` 
+                : '下一阶段：等待中',
+        };
+        
+        // 推送数据到主进程的缓存
+        electronApi.sendDashboardDataUpdate(dataForFloatWindow); 
+    };
+
+    // 周期性推送数据（每秒推送一次）
+    // 注意：这个 timer 是独立的，确保主进程缓存始终是最新的
+    const pushTimer = setInterval(pushDataToMain, 1000);
+
+    // 清理函数
+    return () => clearInterval(pushTimer);
+    
+  }, [currentBell, nextBell, now, countdownData, elapsedMinutes]); 
+
+
+  // 7. Auto-scroll effect
   useEffect(() => {
     const targetId = currentBell?.id || nextBell?.id;
     const container = tableContainerRef.current;
@@ -77,9 +136,6 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     if (targetId && container) {
       const row = rowRefs.current.get(targetId);
       if (row) {
-        // 核心修复逻辑：
-        // 计算目标行相对于容器顶部的偏移量，并减去容器高度的一半，实现"居中"效果
-        // 这种方式只改变容器的 scrollTop，绝对不会触发浏览器的全局滚动
         const top = row.offsetTop - (container.clientHeight / 2) + (row.clientHeight / 2);
         
         container.scrollTo({
@@ -179,9 +235,9 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
            </div>
 
            {/* Countdown */}
-           {countdownText && (
+           {countdownData.text && (
              <h2 className="text-base sm:text-xl lg:text-3xl text-slate-500 dark:text-slate-400 font-light mt-1 sm:mt-2 tracking-wide z-10 animate-pulse">
-               {countdownText}
+               {countdownData.text}
              </h2>
            )}
         </div>
