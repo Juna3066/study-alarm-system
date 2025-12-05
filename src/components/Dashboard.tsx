@@ -107,10 +107,10 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
             systemTime: now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
             currentPhaseDisplay: currentBell 
                 ? `${currentBell.name} (${currentPhaseTimeElapsed})` 
-                : '当前时段：等待闹铃',
+                : '当前时段：无',
             nextPhaseDisplay: nextBell
                 ? `${nextBell.name} (${nextPhaseTimeRemaining})` 
-                : '下一时段：计划完成',
+                : '下一时段：无',
         };
         
         // 推送数据到主进程的缓存
@@ -268,7 +268,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                  </div>
                ) : (
                  <div className="text-slate-400 dark:text-slate-500 italic text-xs sm:text-sm truncate">
-                   等待闹铃
+                   无
                  </div>
                )}
              </div>
@@ -312,7 +312,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
                  </div>
                ) : (
                  <div className="text-slate-400 dark:text-slate-500 italic text-xs sm:text-sm truncate">
-                   计划完成
+                   无
                  </div>
                )}
              </div>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园闹铃悬浮窗 - 深空矩阵</title>
+</head>
+
+<body style="overflow: hidden; user-select: none;"
+    class="bg-transparent m-0 p-0 text-white flex justify-center items-center h-screen w-screen">
+    
+    <div id="app"
+        class="w-[220px] h-[110px] bg-gray-950/70 backdrop-blur-3xl rounded-lg shadow-2xl p-3 
+               flex flex-col justify-center items-center text-center transition-all duration-300
+               border-l-4 border-t-4 border-cyan-400/80 font-mono shadow-xl shadow-cyan-500/50">
+
+        <div id="drag-region" style="-webkit-app-region: drag;" class="w-full h-full absolute top-0 left-0 cursor-crosshair"></div>
+
+        <div class="z-10 relative pointer-events-none w-full flex flex-col justify-center items-center space-y-1">
+            
+            <div id="current-date" class="text-xs text-cyan-400 font-light truncate uppercase">
+                // System Time [2025/12/05]
+            </div>
+            
+            <div id="system-time" class="text-4xl font-black text-cyan-300 tabular-nums tracking-widest leading-none 
+                                        drop-shadow-lg shadow-cyan-500/60">
+                18:29
+            </div>
+            
+            <div class="w-1/2 h-px bg-cyan-500/30"></div>
+            
+            <div id="current-phase" class="text-xs text-yellow-400 font-bold truncate leading-tight pt-1">
+                [STATUS: ACTIVE] 下课 (T-19M)
+            </div>
+            
+            <div id="next-phase" class="text-xs text-cyan-500/70 font-medium leading-tight">
+                [NEXT: SCHEDULED] 上课 (T+31M)
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/floating-entry.js"></script>
+</body>
+
+</html>

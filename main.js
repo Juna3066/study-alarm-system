@@ -78,7 +78,7 @@ function createFloatingWindow() {
     floatWin.once('ready-to-show', () => {
         setTimeout(() => { 
             floatWin.show(); 
-            if (isDev) { win.webContents.openDevTools({ mode: 'detach' }); }
+            if (isDev) { floatWin.webContents.openDevTools({ mode: 'detach' }); }
         }, 50);
     });
 
