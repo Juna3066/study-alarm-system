@@ -62,10 +62,19 @@ function createWindow() {
 }
 
 function createFloatingWindow() {
+
     const bounds = loadFloatingWindowBounds();
+
+    const forcedWidth = 200;
+    const forcedHeight = 100;
+
     floatWin = new BrowserWindow({
         show: false, 
-        width: bounds.width, height: bounds.height, x: bounds.x, y: bounds.y,
+        // width: bounds.width, height: bounds.height,
+        width: forcedWidth, height: forcedHeight,
+        x: bounds.x + (bounds.width - forcedWidth), 
+        y: bounds.y + (bounds.height - forcedHeight),
+        maximizable: false,
         resizable: false, frame: false, transparent: true, skipTaskbar: true, alwaysOnTop: true,
         webPreferences: {
             nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload.js')
