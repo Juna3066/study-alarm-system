@@ -3,21 +3,16 @@
 // 1. 引入全局样式（包含 Tailwind 指令）
 import './index.css'; 
 
-// ----------------------------------------------------
 // 2. 实时更新UI的函数
-// ----------------------------------------------------
 const updateUI = (data) => {
     // 1. 日期
-    document.getElementById('current-date').innerText = data.currentDate || 'XX年XX月XX日 周X';
-    
+    document.getElementById('current-date').innerText = data.currentDate ;
     // 2. 系统时间
-    document.getElementById('system-time').innerText = data.systemTime || 'XX时XX分';
-    
+    document.getElementById('system-time').innerText = data.systemTime;
     // 3. 当前阶段
-    document.getElementById('current-phase').innerText = data.currentPhaseDisplay || '当前阶段：无';
-    
+    document.getElementById('current-phase').innerText = data.currentPhaseDisplay;
     // 4. 下一阶段
-    document.getElementById('next-phase').innerText = data.nextPhaseDisplay || '下一阶段：无';
+    document.getElementById('next-phase').innerText = data.nextPhaseDisplay;
 };
 
 
@@ -28,6 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
         
         // 监听主进程推送的实时数据
         window.electronAPI.onFloatingDataUpdate((event, data) => {
+            //console.log('Received floating data:', data);
             updateUI(data);
         });
         

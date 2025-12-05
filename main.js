@@ -2,9 +2,7 @@ const { app, BrowserWindow, ipcMain, Tray, Menu, screen } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-// ------------------------------------------------------------------
 // 1. Squirrel 启动检查 (防止安装/卸载后多次启动)
-// ------------------------------------------------------------------
 if (require('electron-squirrel-startup')) {
     app.quit();
 }
@@ -14,13 +12,9 @@ let win;
 let tray;
 let floatWin; // 悬浮窗全局变量
 
-// ⬇️ 【核心修正：数据缓存】 ⬇️
 // 用于存储 Dashboard.tsx 推送过来的最新排程数据
 let scheduleDataCache = {};
 
-// ===================================================================
-// ⬇️ 【全局函数：数据、位置持久化、窗口创建】 ⬇️
-// ===================================================================
 
 // D. 悬浮窗配置持久化文件路径
 const boundsFilePath = path.join(app.getPath('userData'), 'floating-bounds.json');
@@ -54,6 +48,11 @@ function saveFloatingWindowBounds(bounds) {
     }
 }
 
+// 托盘和窗口加载图标的绝对路径
+// 注意：在打包后，icon.ico 理论上在应用的根目录下（或 resources/app 目录下），但最稳健的方式是使用 files 包含它，并从主进程加载
+// 在 dev 和 打包后的 dist 模式下，__dirname指向不同的位置
+const ICON_PATH = path.join(__dirname, 'public/icon.ico'); 
+
 // G. 主窗口创建函数
 function createWindow() {
     win = new BrowserWindow({
@@ -66,7 +65,7 @@ function createWindow() {
         resizable: true,
         maximizable: false,
         title: '校园闹铃系统',
-        icon: path.join(__dirname, 'public/icon.ico'),
+        icon: ICON_PATH,
         webPreferences: {
             nodeIntegration: false, // 现代 Electron 推荐关闭
             contextIsolation: true, // 现代 Electron 推荐开启
@@ -82,7 +81,8 @@ function createWindow() {
         win.loadURL('http://localhost:5173');
         win.webContents.openDevTools({ mode: 'detach' });
     } else {
-        win.loadFile(path.join(__dirname, 'dist/index.html'));
+        // app.getAppPath() 在打包后指向 resources/app.asar (或 resources/app 目录)
+        win.loadFile(path.join(app.getAppPath(), 'dist/index.html'));        
     }
 
     win.on('close', (event) => {
@@ -122,8 +122,11 @@ function createFloatingWindow() {
     const isDev = !app.isPackaged;
     if (isDev) {
         floatWin.loadURL('http://localhost:5173/floating.html');
+        floatWin.webContents.openDevTools({ mode: 'detach' });
     } else {
-        floatWin.loadFile(path.join(__dirname, 'dist/floating.html'));
+        // floatWin.loadFile(path.join(__dirname, 'dist/floating.html'));
+        // 【修正】使用 app.getAppPath() 确保打包后路径正确
+        floatWin.loadFile(path.join(app.getAppPath(), 'dist/floating.html'));
     }
 
     // 监听移动事件，保存新位置
@@ -144,9 +147,7 @@ function getAlarmData() {
     return scheduleDataCache;
 }
 
-// ------------------------------------------------------------------
 // 2. 单实例锁检查 (确保只有一个应用实例运行)
-// ------------------------------------------------------------------
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -161,12 +162,10 @@ if (!gotTheLock) {
         }
     });
 
-    // ------------------------------------------------------------------
     // 3. 应用程序准备就绪，创建窗口和托盘 (原 app.whenReady())
-    // ------------------------------------------------------------------
     app.whenReady().then(() => {
         createWindow();
-        createFloatingWindow(); // 启动时也创建悬浮窗
+        // createFloatingWindow(); // 启动时也创建悬浮窗
 
         // ⬇️ 【新增：IPC 修正 - Dashboard 数据推送】 ⬇️
         // 监听 Dashboard.tsx 推送来的最新排程数据，并更新缓存
@@ -181,9 +180,7 @@ if (!gotTheLock) {
             event.sender.send('FLOATING_DATA_UPDATE', getAlarmData());
         });
 
-        // ----------------------------------------------------\
         // 实时推送数据给悬浮窗 (每秒)
-        // ----------------------------------------------------\
         setInterval(() => {
             // 使用 getAlarmData() 确保获取的是最新的缓存数据
             const data = getAlarmData();
@@ -192,7 +189,6 @@ if (!gotTheLock) {
                 floatWin.webContents.send('FLOATING_DATA_UPDATE', data);
             }
         }, 1000); // 每秒推送一次
-        // ----------------------------------------------------\
 
         // 监听窗口尺寸调整指令 (保持不变)
         ipcMain.on('resize-window', (event, width, height) => {
@@ -202,7 +198,7 @@ if (!gotTheLock) {
         });
 
         // 托盘设置
-        tray = new Tray(path.join(__dirname, 'public', 'icon.ico'));
+        tray = new Tray(path.join(ICON_PATH));
         const contextMenu = Menu.buildFromTemplate([
             {
                 label: '显示/隐藏主窗口',

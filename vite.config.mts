@@ -14,7 +14,7 @@ export default defineConfig({
       // ⬇️ 【关键修改：配置多页应用 (MPA) 入口】 ⬇️
       input: {
         main: path.resolve(__dirname, 'index.html'), // 主窗口入口
-        floating: path.resolve(__dirname, 'public/floating.html'), // 悬浮窗入口
+        floating: path.resolve(__dirname, 'floating.html'), // 悬浮窗入口
       },
       // ----------------------------------------
       output: {

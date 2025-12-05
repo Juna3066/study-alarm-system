@@ -68,7 +68,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     const seconds = totalSeconds % 60;
 
     return {
-        text: `距离下个时段：${minutes}分${seconds.toString().padStart(2, '0')}秒`,
+        text: `下一时段：${minutes}分${seconds.toString().padStart(2, '0')}秒 后`,
         remainingMinutes: totalMinutes
     };
   }, [now, nextBell]);
@@ -92,26 +92,25 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
   useEffect(() => {
     const electronApi = (window as any).electronAPI;
     if (!electronApi || !electronApi.sendDashboardDataUpdate) return;
+    
+    const padToTwoDigits = (num: number) => {
+      return String(num).padStart(2, '0');
+    };
 
     // Helper to calculate and format the 4-row data structure
     const pushDataToMain = () => {
-        const currentPhaseTimeElapsed = elapsedMinutes > 0 
-            ? `${elapsedMinutes}分前` 
-            : (currentBell ? '刚刚开始' : '无排课');
-            
-        const nextPhaseTimeRemaining = countdownData.remainingMinutes > 0 
-            ? `${countdownData.remainingMinutes}分后` 
-            : (nextBell ? '即将开始' : '计划完成');
+        const currentPhaseTimeElapsed = `${padToTwoDigits(elapsedMinutes)}分前`;
+        const nextPhaseTimeRemaining =  `${padToTwoDigits(countdownData.remainingMinutes)}分后`;
 
         const dataForFloatWindow = {
-            currentDate: now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }),
-            systemTime: now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }).replace(':', '时') + '分',
+            currentDate: now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' }),
+            systemTime: now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
             currentPhaseDisplay: currentBell 
                 ? `${currentBell.name} (${currentPhaseTimeElapsed})` 
-                : '当前阶段：无数据',
+                : '当前时段：等待闹铃',
             nextPhaseDisplay: nextBell
                 ? `${nextBell.name} (${nextPhaseTimeRemaining})` 
-                : '下一阶段：等待中',
+                : '下一时段：计划完成',
         };
         
         // 推送数据到主进程的缓存
@@ -146,8 +145,8 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
     }
   }, [currentBell?.id, nextBell?.id]);
 
-  const formatDate = (date: Date) => date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
-  const formatTime = (date: Date) => date.toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const formatDate = (date: Date) => date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+  const formatTime = (date: Date) => date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
   const getRingtoneName = (typeId: string) => ringtones.find(r => r.id === typeId)?.name || '未知类型';
 
   return (
@@ -299,7 +298,7 @@ const Dashboard: React.FC<DashboardProps> = ({ schedule, ringtones }) => {
              <div className="flex items-center gap-2 sm:gap-3 relative z-10 shrink-0">
                 <span className={`w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full shadow-sm ${nextBell ? 'bg-emerald-500' : 'bg-slate-400 dark:bg-slate-600'}`}></span>
                 <h3 className="text-sm sm:text-lg md:text-xl font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                   下个时段
+                   下一时段
                 </h3>
              </div>
 

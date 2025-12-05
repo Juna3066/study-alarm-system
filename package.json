@@ -31,16 +31,13 @@
       "dist/**/*",
       "main.js",
       "preload.js",
-      "package.json"
+      "package.json",
+      "public/icon.ico"
     ],
     "extraResources": [
       {
         "from": "default",
         "to": "default"
-      },
-      {
-        "from": "public/icon.ico",
-        "to": "icon.ico"
       }
     ],
     "win": {
