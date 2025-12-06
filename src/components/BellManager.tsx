@@ -78,7 +78,24 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     resetForm();
   };
 
-  const handleExportExcel = () => { /* ... */ };
+  const handleExportExcel = () => {
+    if (schedule.length === 0) {
+      alert("没有可导出的数据。");
+      return;
+    }
+    const data = schedule.map(s => ({
+      '触发时间': s.time,
+      '闹铃名称': s.name,
+      '铃声类型': ringtones.find(r => r.id === s.typeId)?.name || '未知',
+      '备注': s.remarks || ''
+    }));
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wscols = [{wch: 10}, {wch: 20}, {wch: 15}, {wch: 30}];
+    ws['!cols'] = wscols;
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "闹铃计划");
+    XLSX.writeFile(wb, `闹铃计划_${new Date().toISOString().split('T')[0]}.xlsx`);
+  };
 
   const handleImportExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -159,7 +176,13 @@ const BellManager: React.FC<BellManagerProps> = ({ schedule, setSchedule, ringto
     reader.readAsBinaryString(file);
   };
 
-  const handleDownloadTemplate = () => { /* ... */ };
+  const handleDownloadTemplate = () => {
+    const templateData = [{ '触发时间': '08:00', '闹铃名称': '示例课程', '铃声类型': '上课铃', '备注': '示例备注' }];
+    const ws = XLSX.utils.json_to_sheet(templateData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "模板");
+    XLSX.writeFile(wb, "闹铃计划表_模板.xlsx");
+  };
 
   const sortedSchedule = [...schedule].sort((a, b) => a.time.localeCompare(b.time));
 

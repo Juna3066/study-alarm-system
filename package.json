@@ -1,6 +1,6 @@
 {
   "name": "school-bell-system",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "校园闹铃系统",
   "main": "main.js",
   "pnpm": {
