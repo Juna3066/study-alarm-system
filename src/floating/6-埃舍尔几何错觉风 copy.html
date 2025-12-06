@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园闹铃悬浮窗 - 蒸汽波迷幻风</title>
+</head>
+
+<body class="bg-gradient-to-r from-fuchsia-500 to-cyan-500 m-0 p-0 flex justify-center items-center h-screen w-screen overflow-hidden select-none font-sans">
+    <div id="app"
+        class="w-[200px] h-[100px] bg-black/70 backdrop-blur-sm rounded-none shadow-2xl shadow-pink-400/80 p-2 
+               flex flex-col justify-center items-center text-center transition-all duration-300
+               border-2 border-fuchsia-400 relative">
+
+        <div id="drag-region" style="-webkit-app-region: drag;" class="w-full h-full absolute top-0 left-0 cursor-crosshair"></div>
+        <div class="z-10 relative pointer-events-none w-full flex flex-col justify-center items-center space-y-0.5 text-pink-400">
+            <div id="current-date" class="text-xs text-cyan-400 font-light truncate">
+                2025/12/05 | FRI
+            </div>
+            <div id="system-time" class="text-4xl font-extrabold text-pink-300 tabular-nums tracking-widest leading-none 
+                                        drop-shadow-xl drop-shadow-pink-500/80">
+                18:29
+            </div>
+            <div id="current-phase" class="text-xs text-pink-400 font-bold truncate leading-tight mt-1 pt-0.5 border-b border-cyan-400/50">
+                [RUNNING] 下课 (19MIN)
+            </div>
+            <div id="next-phase" class="text-xs text-cyan-400 font-medium leading-tight">
+                [NEXT] 上课 (31MIN)
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/floating-entry.js"></script>
+</body>
+</html>
