@@ -161,7 +161,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             </h3>
           </div>
 
-          <div className="flex-1 min-w-0 relative z-10 px-2 flex justify-center">
+          <div className="flex-1 min-w-0 relative z-10 px-2 flex justify-start">
             {currentBell ? (
               <div
                 className="text-xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white truncate"
@@ -170,7 +170,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 {currentBell.name}
               </div>
             ) : (
-              <div className="text-slate-400 dark:text-slate-500 italic text-xs sm:text-sm truncate">
+              <div className="text-xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white opacity-90 truncate">
                 无
               </div>
             )}
@@ -205,7 +205,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             </h3>
           </div>
 
-          <div className="flex-1 min-w-0 relative z-10 px-2 flex justify-center">
+          <div className="flex-1 min-w-0 relative z-10 px-2 flex justify-start">
             {nextBell ? (
               <div
                 className="text-xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white opacity-90 truncate"
@@ -214,7 +214,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 {nextBell.name}
               </div>
             ) : (
-              <div className="text-slate-400 dark:text-slate-500 italic text-xs sm:text-sm truncate">
+              <div className="text-xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white opacity-90 truncate">
                 无
               </div>
             )}
